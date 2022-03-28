@@ -121,6 +121,7 @@ public class Manager {
     public void removeSubtask(int id) {
         if (userTask.containsKey(id) == true) {
             userSubtask.remove(id);
+
             System.out.println("Подзадача с идентификатором " + id + " удалена!" + "\n");
         } else {
             System.out.println("Подзадача с идентификатором " + id + " не существует!" + "\n");
@@ -128,13 +129,16 @@ public class Manager {
     }
 
     //Создание эпика
-    public Epic creatEpic(Epic epic) {
+    public void creatEpic(Epic epic) {
+
         epic.setId(++index);
         userEpic.put(epic.getId(), epic);
+        //epic.setListSubtask(new ArrayList<>());
+        statusEpic(epic.getId());
         System.out.println("Эпик номер " + epic.getId() + ": " + userEpic.get(epic.getId()));
         System.out.println("Описание эпика: " + epic.getDescription());
         System.out.println("Статус эпика: " + epic.getStatus() + "\n");
-        return epic;
+        //return epic;
     }
 
     //Обновление эпика
@@ -152,7 +156,7 @@ public class Manager {
 
     //Получение списка всех эпиков
     public ArrayList<Epic> listEpic() {
-        System.out.println("Перед нами стоят следующие подзадачи:");
+        System.out.println("Перед нами стоят следующие эпики:");
         return new ArrayList<>(userEpic.values());
     }
 
@@ -182,9 +186,33 @@ public class Manager {
         }
     }
 
-    private void statusEpic (Epic epic) {
-
+    //Определение статуса эпика
+    private void statusEpic(int idEpic) {
+        int counterNew = 0;
+        int counterDone = 0;
+        ArrayList<Subtask> list = userEpic.get(idEpic).getListSubtask();
+        if (list.size() == 0) {
+            userEpic.get(idEpic).setStatus("NEW");
+        } else {
+            for (Subtask subtask : list) {
+                if (subtask.getStatus().equals("NEW")) {
+                    counterNew += 1;
+                } else if (subtask.getStatus().equals("DONE")) {
+                    counterDone += 1;
+                }
+            }
+            if (counterNew == list.size()) {
+                userEpic.get(idEpic).setStatus("NEW");
+            } else if (counterDone == list.size()) {
+                userEpic.get(idEpic).setStatus("DONE");
+            } else {
+                userEpic.get(idEpic).setStatus("IN_PROGRESS");
+            }
+        }
     }
 
-
+    public void getSubtaskByEpic (int idEpic) {
+        userEpic.get(idEpic).setListSubtask(new ArrayList<>());
+        System.out.println(userEpic.get(idEpic).getListSubtask());
+    }
 }
