@@ -21,20 +21,13 @@ public class Manager {
     public Task creatTask(Task task) {
         task.setId(++index);
         userTask.put(task.getId(), task);
-        System.out.println("Задача номер " + task.getId() + ": " + userTask.get(task.getId()));
-        System.out.println("Описание задачи: " + task.getDescription());
-        System.out.println("Статус задачи: " + task.getStatus() + "\n");
         return task;
     }
 
     //Обновление задачи
     public void updateTask(Task task) {
         if (userTask.containsKey(task.getId())) {
-            System.out.println("Задача с таким именем уже существует! Производим замену...");
             userTask.put(task.getId(), task);
-            System.out.println("Задача номер " + task.getId() + ": " + userTask.get(task.getId()));
-            System.out.println("Описание задачи: " + task.getDescription());
-            System.out.println("Статус задачи: " + task.getStatus() + "\n");
         } else {
             System.out.println("Задачи с индентификатором " + task.getId() + " не существует." + "\n");
         }
@@ -42,18 +35,14 @@ public class Manager {
 
     //Получение списка всех задач
     public ArrayList<Task> listTask() {
-        System.out.println("Перед нами стоят следующие задачи:");
         return new ArrayList<>(userTask.values());
     }
 
     //Получение задачи по индексу
     public Task receiveTask(int id) {
-        if (userTask.containsKey(id) == true) {
-            System.out.println("Задача с идентификатором " + id + ": " + userTask.get(id) + "." + "\n");
-        } else {
+        if (!userTask.containsKey(id) == true) {
             System.out.println("Задачи с идентификатором " + id + " не существует!" + "\n");
-        }
-        return userTask.get(id);
+        } return userTask.get(id);
     }
 
     //Удаление всех задач
@@ -66,7 +55,6 @@ public class Manager {
     public void removeTask(int id) {
         if (userTask.containsKey(id) == true) {
             userTask.remove(id);
-            System.out.println("Задача с идентификатором " + id + " удалена!" + "\n");
         } else {
             System.out.println("Задачи с идентификатором " + id + " не существует!" + "\n");
         }
@@ -76,9 +64,6 @@ public class Manager {
     public Subtask creatSubtask(Subtask subtask) {
         subtask.setId(++index);
         userSubtask.put(subtask.getId(), subtask);
-        System.out.println("Подзадача номер " + subtask.getId() + ": " + userSubtask.get(subtask.getId()));
-        System.out.println("Описание подзадачи: " + subtask.getDescription());
-        System.out.println("Статус подзадачи: " + subtask.getStatus() + "\n");
         return subtask;
     }
 
@@ -87,9 +72,6 @@ public class Manager {
         if (userSubtask.containsKey(subtask.getId())) {
             System.out.println("Подзадача с таким именем уже существует! Производим замену...");
             userSubtask.put(subtask.getId(), subtask);
-            System.out.println("Подзадача номер " + subtask.getId() + ": " + userSubtask.get(subtask.getId()));
-            System.out.println("Описание подзадачи: " + subtask.getDescription());
-            System.out.println("Статус подзадачи: " + subtask.getStatus() + "\n");
         } else {
             System.out.println("Подзадачи с индентификатором " + subtask.getId() + " не существует." + "\n");
         }
@@ -97,18 +79,14 @@ public class Manager {
 
     //Получение списка всех подзадач
     public ArrayList<Subtask> listSubtask() {
-        System.out.println("Перед нами стоят следующие подзадачи:");
         return new ArrayList<>(userSubtask.values());
     }
 
     //Получение подзадачи по индексу
     public Subtask receiveSubtask(int id) {
-        if (userSubtask.containsKey(id) == true) {
-            System.out.println("Подзадача с идентификатором " + id + ": " + userSubtask.get(id) + "." + "\n");
-        } else {
+        if (!userSubtask.containsKey(id) == true) {
             System.out.println("Подзадачи с идентификатором " + id + " не существует!" + "\n");
-        }
-        return userSubtask.get(id);
+        } return userSubtask.get(id);
     }
 
     //Удаление всех подзадач
@@ -119,10 +97,8 @@ public class Manager {
 
     //Удаление подзадачи по индексу
     public void removeSubtask(int id) {
-        if (userTask.containsKey(id) == true) {
+        if (!userTask.containsKey(id)) {
             userSubtask.remove(id);
-
-            System.out.println("Подзадача с идентификатором " + id + " удалена!" + "\n");
         } else {
             System.out.println("Подзадача с идентификатором " + id + " не существует!" + "\n");
         }
@@ -130,25 +106,15 @@ public class Manager {
 
     //Создание эпика
     public void creatEpic(Epic epic) {
-
         epic.setId(++index);
         userEpic.put(epic.getId(), epic);
-        //epic.setListSubtask(new ArrayList<>());
         statusEpic(epic.getId());
-        System.out.println("Эпик номер " + epic.getId() + ": " + userEpic.get(epic.getId()));
-        System.out.println("Описание эпика: " + epic.getDescription());
-        System.out.println("Статус эпика: " + epic.getStatus() + "\n");
-        //return epic;
     }
 
     //Обновление эпика
     public void updateEpic(Epic epic) {
         if (userEpic.containsKey(epic.getId())) {
-            System.out.println("Эпик с таким именем уже существует! Производим замену...");
             userEpic.put(epic.getId(), epic);
-            System.out.println("Эпик номер " + epic.getId() + ": " + userEpic.get(epic.getId()));
-            System.out.println("Описание эпика: " + epic.getDescription());
-            System.out.println("Статус эпика: " + epic.getStatus() + "\n");
         } else {
             System.out.println("Эпика с индентификатором " + epic.getId() + " не существует." + "\n");
         }
@@ -156,18 +122,14 @@ public class Manager {
 
     //Получение списка всех эпиков
     public ArrayList<Epic> listEpic() {
-        System.out.println("Перед нами стоят следующие эпики:");
         return new ArrayList<>(userEpic.values());
     }
 
     //Получение эпика по индексу
     public Epic receiveEpic(int id) {
-        if (userEpic.containsKey(id) == true) {
-            System.out.println("Эпик с идентификатором " + id + ": " + userEpic.get(id) + "." + "\n");
-        } else {
+        if (!userEpic.containsKey(id) == true) {
             System.out.println("Эпика с идентификатором " + id + " не существует!" + "\n");
-        }
-        return userEpic.get(id);
+        } return userEpic.get(id);
     }
 
     //Удаление всех эпиков
@@ -180,7 +142,7 @@ public class Manager {
     public void removeEpic(int id) {
         if (userEpic.containsKey(id) == true) {
             userEpic.remove(id);
-            System.out.println("Эпик с идентификатором " + id + " удалена!" + "\n");
+            userSubtask.values().clear();
         } else {
             System.out.println("Эпика с идентификатором " + id + " не существует!" + "\n");
         }
@@ -211,8 +173,12 @@ public class Manager {
         }
     }
 
-    public void getSubtaskByEpic (int idEpic) {
-        userEpic.get(idEpic).setListSubtask(new ArrayList<>());
-        System.out.println(userEpic.get(idEpic).getListSubtask());
+    public void getSubtaskByEpic(int idEpic) {
+        if (!userEpic.containsKey(idEpic)) {
+            System.out.println("Эпика с индификатором " + idEpic + "не существует.");
+        } else {
+            userEpic.get(idEpic).setListSubtask(listSubtask());
+            System.out.println(userEpic.get(idEpic).getListSubtask());
+        }
     }
 }

@@ -18,34 +18,42 @@ public class Task {
     }
 
     public String getNameTask() {
+
         return nameTask;
     }
 
     public void setNameTask(String nameTask) {
+
         this.nameTask = nameTask;
     }
 
     public String getDescription() {
+
         return description;
     }
 
     public void setDescription(String description) {
+
         this.description = description;
     }
 
     public int getId() {
+
         return id;
     }
 
     public void setId(int id) {
+
         this.id = id;
     }
 
     public String getStatus() {
+
         return status;
     }
 
     public void setStatus(String status) {
+
         this.status = status;
     }
 
@@ -59,6 +67,7 @@ public class Task {
 
     @Override
     public int hashCode() {
+
         return Objects.hash(nameTask, description, id, status);
     }
 
