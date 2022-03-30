@@ -1,4 +1,4 @@
-package managers;
+package manager;
 
 import task.Task;
 import task.Subtask;
@@ -92,8 +92,6 @@ public class Manager {
         epic.setId(++index);
         userEpic.put(epic.getId(), epic);
         statusEpic(epic);
-        System.out.println(epic.getNameTask() + "\n" + epic.getDescription() + "\n" + epic.getStatus() + "\n" +
-                epic.getId());
     }
 
     //Обновление эпика
@@ -128,22 +126,22 @@ public class Manager {
     }
 
     //Подзадачи эпика
-    public ArrayList<Integer> getSubtaskByEpic(Epic epic) {
-        return new ArrayList<Integer>(epic.getListSubtask());
+    public ArrayList<Subtask> getSubtaskByEpic(Epic epic) {
+        return new ArrayList<Subtask>(epic.getListSubtask());
     }
 
     //Определение статуса эпика
     private void statusEpic(Epic epic) {
-        ArrayList<Integer> subId = getSubtaskByEpic(epic);
+        ArrayList<Subtask> subId = getSubtaskByEpic(epic);
         ArrayList<Subtask> list = new ArrayList<>();
-        for (Integer sub : subId) {
-            list.add(receiveSubtask(sub));
+        for (Subtask sub : subId) {
+            list.add(receiveSubtask(sub.getId()));
         }
 
         int counterNew = 0;
         int counterDone = 0;
         for (Subtask subtask : list) {
-            if (subtask == null) {
+            if (list.isEmpty()) {
                 epic.setStatus("NEW");
                 return;
             } else if (subtask.getStatus().equals("NEW")) {
