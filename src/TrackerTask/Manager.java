@@ -42,7 +42,8 @@ public class Manager {
     public Task receiveTask(int id) {
         if (!userTask.containsKey(id) == true) {
             System.out.println("Задачи с идентификатором " + id + " не существует!" + "\n");
-        } return userTask.get(id);
+        }
+        return userTask.get(id);
     }
 
     //Удаление всех задач
@@ -53,7 +54,7 @@ public class Manager {
 
     //Удаление задачи по индексу
     public void removeTask(int id) {
-        if (userTask.containsKey(id) == true) {
+        if (userTask.containsKey(id)) {
             userTask.remove(id);
         } else {
             System.out.println("Задачи с идентификатором " + id + " не существует!" + "\n");
@@ -86,7 +87,8 @@ public class Manager {
     public Subtask receiveSubtask(int id) {
         if (!userSubtask.containsKey(id) == true) {
             System.out.println("Подзадачи с идентификатором " + id + " не существует!" + "\n");
-        } return userSubtask.get(id);
+        }
+        return userSubtask.get(id);
     }
 
     //Удаление всех подзадач
@@ -129,7 +131,8 @@ public class Manager {
     public Epic receiveEpic(int id) {
         if (!userEpic.containsKey(id) == true) {
             System.out.println("Эпика с идентификатором " + id + " не существует!" + "\n");
-        } return userEpic.get(id);
+        }
+        return userEpic.get(id);
     }
 
     //Удаление всех эпиков
