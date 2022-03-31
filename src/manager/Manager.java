@@ -141,10 +141,7 @@ public class Manager {
         int counterNew = 0;
         int counterDone = 0;
         for (Subtask subtask : list) {
-            if (list.isEmpty()) {
-                epic.setStatus("NEW");
-                return;
-            } else if (subtask.getStatus().equals("NEW")) {
+             if (subtask.getStatus().equals("NEW")) {
                 counterNew += 1;
             } else if (subtask.getStatus().equals("DONE")) {
                 counterDone += 1;
@@ -154,6 +151,9 @@ public class Manager {
             epic.setStatus("NEW");
         } else if (counterDone == list.size()) {
             epic.setStatus("DONE");
+        } else if (list.isEmpty()) {
+            epic.setStatus("NEW");
+            return;
         } else {
             epic.setStatus("IN_PROGRESS");
         }
