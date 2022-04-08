@@ -1,14 +1,14 @@
 import task.Task;
 import task.Subtask;
 import task.Epic;
-import manager.Manager;
+import manager.InMemoryTaskManager;
 
 import java.util.ArrayList;
 
 public class Main {
     public static void main(String[] args) {
 
-        Manager manager = new Manager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
         Task taskOne = new Task("task 1", "Описание Task 1", 0, "NEW");
         Task taskTwo = new Task("task 2", "Описание Task 2", 0, "DONE");
