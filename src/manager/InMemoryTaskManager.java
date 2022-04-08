@@ -1,5 +1,6 @@
 package manager;
 
+import task.StatusTask;
 import task.Task;
 import task.Subtask;
 import task.Epic;
@@ -169,14 +170,14 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
         if (counterNew == list.size()) {
-            epic.setStatus("NEW");
+            epic.setStatus(StatusTask.NEW);
         } else if (counterDone == list.size()) {
-            epic.setStatus("DONE");
+            epic.setStatus(StatusTask.DONE);
         } else if (list.isEmpty()) {
-            epic.setStatus("NEW");
+            epic.setStatus(StatusTask.NEW);
             return;
         } else {
-            epic.setStatus("IN_PROGRESS");
+            epic.setStatus(StatusTask.IN_PROGRESS);
         }
     }
 }

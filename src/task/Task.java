@@ -7,14 +7,14 @@ public class Task {
     private String nameTask;
     private String description;
     private int id;
-    private  String status;
+    private StatusTask statusTask;
 
 
-    public Task(String nameTask, String description, int id, String status) {
+    public Task(String nameTask, String description, int id, StatusTask statusTask) {
         this.nameTask = nameTask;
         this.description = description;
         this.id = id;
-        this.status = status;
+        this.statusTask = statusTask;
     }
 
     public String getNameTask() {
@@ -41,12 +41,12 @@ public class Task {
         this.id = id;
     }
 
-    public String getStatus() {
-        return status;
+    public StatusTask getStatus() {
+        return statusTask;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setStatus(StatusTask statusTask) {
+        this.statusTask = statusTask;
     }
 
     @Override
@@ -54,12 +54,14 @@ public class Task {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return id == task.id && Objects.equals(nameTask, task.nameTask) && Objects.equals(description, task.description) && Objects.equals(status, task.status);
+        return id == task.id && Objects.equals(nameTask, task.nameTask) &&
+                Objects.equals(description, task.description)
+                && Objects.equals(statusTask, task.statusTask);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nameTask, description, id, status);
+        return Objects.hash(nameTask, description, id, statusTask);
     }
 
     @Override
@@ -68,7 +70,7 @@ public class Task {
                 "nameTask='" + nameTask + '\'' +
                 ", description='" + description + '\'' +
                 ", id=" + id +
-                ", status='" + status + '\'' +
+                ", status='" + statusTask + '\'' +
                 '}';
     }
 }
