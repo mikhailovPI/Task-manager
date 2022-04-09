@@ -18,7 +18,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public void add(Task task) {
         history.add(task);
-        if (history.size() == SIZE_HISTORY) {
+        if (history.size() > SIZE_HISTORY) {
             history.removeFirst();
         }
     }
