@@ -7,6 +7,7 @@ import task.Epic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class InMemoryTaskManager implements TaskManager {
@@ -38,7 +39,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение списка всех задач
     @Override
-    public ArrayList<Task> listTask() {
+    public List<Task> listTask() {
         return new ArrayList<>(userTask.values());
     }
 
@@ -79,7 +80,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение списка всех подзадач
     @Override
-    public ArrayList<Subtask> listSubtask() {
+    public List<Subtask> listSubtask() {
         return new ArrayList<>(userSubtask.values());
     }
 
@@ -121,7 +122,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение списка всех эпиков
     @Override
-    public ArrayList<Epic> listEpic() {
+    public List<Epic> listEpic() {
         return new ArrayList<>(userEpic.values());
     }
 
@@ -147,14 +148,14 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Подзадачи эпика
     @Override
-    public ArrayList<Subtask> getSubtaskByEpic(Epic epic) {
+    public List<Subtask> getSubtaskByEpic(Epic epic) {
         return new ArrayList<Subtask>(epic.getListSubtask());
     }
 
     //Определение статуса эпика
     @Override
     public void statusEpic(Epic epic) {
-        ArrayList<Subtask> subId = getSubtaskByEpic(epic);
+        List<Subtask> subId = getSubtaskByEpic(epic);
         ArrayList<Subtask> list = new ArrayList<>();
         for (Subtask sub : subId) {
             list.add(receiveSubtask(sub.getId()));

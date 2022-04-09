@@ -5,6 +5,7 @@ import task.Subtask;
 import task.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     //Создание задачи
@@ -14,7 +15,8 @@ public interface TaskManager {
     void updateTask(Task task);
 
     //Получение списка всех задач
-    ArrayList<Task> listTask();
+
+    List<Task> listTask();
 
     //Получение задачи по индексу
     Task receiveTask(int id);
@@ -32,7 +34,7 @@ public interface TaskManager {
     void updateSubtask(Subtask subtask);
 
     //Получение списка всех подзадач
-    ArrayList<Subtask> listSubtask();
+    List<Subtask> listSubtask();
 
     //Получение подзадачи по индексу
     Subtask receiveSubtask(int id);
@@ -50,7 +52,7 @@ public interface TaskManager {
     void updateEpic(Epic epic);
 
     //Получение списка всех эпиков
-    ArrayList<Epic> listEpic();
+    List<Epic> listEpic();
 
     //Получение эпика по индексу
     Epic receiveEpic(int id);
@@ -62,7 +64,7 @@ public interface TaskManager {
     void removeEpic(int epicId);
 
     //Подзадачи эпика
-    ArrayList<Subtask> getSubtaskByEpic(Epic epic);
+    List<Subtask> getSubtaskByEpic(Epic epic);
 
     //Определение статуса эпика
     void statusEpic(Epic epic);
