@@ -1,17 +1,15 @@
 package manager;
 
-import task.StatusTask;
-import task.Task;
-import task.Subtask;
 import task.Epic;
+import task.StatusTask;
+import task.Subtask;
+import task.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-
 public class InMemoryTaskManager implements TaskManager {
-
 
     private int index = 0;
 
@@ -19,6 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, Subtask> userSubtask = new HashMap<>();
     private HashMap<Integer, Epic> userEpic = new HashMap<>();
 
+    InMemoryHistoryManager inMemoryHistoryManager = new InMemoryHistoryManager();
 
     //Создание задачи
     @Override
@@ -45,7 +44,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение задачи по индексу
     @Override
-    public Task receiveTask(int id) {
+    public Task getTask(int id) {
+        inMemoryHistoryManager.add(userTask.get(id));
         return userTask.get(id);
     }
 
@@ -86,7 +86,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение подзадачи по индексу
     @Override
-    public Subtask receiveSubtask(int id) {
+    public Subtask getSubtask(int id) {
+        inMemoryHistoryManager.add(userSubtask.get(id));
         return userSubtask.get(id);
     }
 
@@ -128,7 +129,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение эпика по индексу
     @Override
-    public Epic receiveEpic(int id) {
+    public Epic getEpic(int id) {
+        inMemoryHistoryManager.add(userEpic.get(id));
         return userEpic.get(id);
     }
 
@@ -158,13 +160,12 @@ public class InMemoryTaskManager implements TaskManager {
         List<Subtask> subId = getSubtaskByEpic(epic);
         ArrayList<Subtask> list = new ArrayList<>();
         for (Subtask sub : subId) {
-            list.add(receiveSubtask(sub.getId()));
+            list.add(getSubtask(sub.getId()));
         }
-
         int counterNew = 0;
         int counterDone = 0;
         for (Subtask subtask : list) {
-             if (subtask.getStatus().equals("NEW")) {
+            if (subtask.getStatus().equals("NEW")) {
                 counterNew += 1;
             } else if (subtask.getStatus().equals("DONE")) {
                 counterDone += 1;

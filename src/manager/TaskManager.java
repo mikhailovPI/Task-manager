@@ -4,7 +4,6 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
@@ -15,11 +14,10 @@ public interface TaskManager {
     void updateTask(Task task);
 
     //Получение списка всех задач
-
     List<Task> listTask();
 
     //Получение задачи по индексу
-    Task receiveTask(int id);
+    Task getTask(int id);
 
     //Удаление всех задач
     void deleteTask();
@@ -37,7 +35,7 @@ public interface TaskManager {
     List<Subtask> listSubtask();
 
     //Получение подзадачи по индексу
-    Subtask receiveSubtask(int id);
+    Subtask getSubtask(int id);
 
     //Удаление всех подзадач
     void deleteSubtask();
@@ -55,7 +53,7 @@ public interface TaskManager {
     List<Epic> listEpic();
 
     //Получение эпика по индексу
-    Epic receiveEpic(int id);
+    Epic getEpic(int id);
 
     //Удаление всех эпиков
     void deleteEpic();
