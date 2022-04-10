@@ -38,7 +38,7 @@ public interface TaskManager {
     Subtask getSubtask(int id);
 
     //Удаление всех подзадач
-    void deleteSubtasks(Subtask subtask);
+    void deleteSubtasks();
 
     //Удаление подзадачи по индексу
     void removeSubtask(int id);
@@ -56,7 +56,7 @@ public interface TaskManager {
     Epic getEpic(int id);
 
     //Удаление всех эпиков
-    void deleteEpics(Epic epic);
+    void deleteEpics();
 
     //Удаление эпика по индексу
     void removeEpic(int epicId);
