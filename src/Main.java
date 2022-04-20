@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = Managers.getDefault();
-
+        HistoryManager managerHistory = Managers.getHistoryDefault();
 
         Task taskOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW);
         Task taskTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.DONE);
@@ -33,10 +33,26 @@ public class Main {
         manager.creatSubtask(subtaskTwo);
         manager.creatSubtask(subtaskThree);
 
+        manager.getEpic(3);
+        manager.getTask(1);
+        manager.getTask(2);
+        manager.getTask(1);
+        manager.getSubtask(5);
+        manager.getEpic(4);
+        manager.getSubtask(6);
+        manager.getEpic(3);
+        manager.getSubtask(5);
+        manager.getTask(2);
+
+        System.out.println(managerHistory.getHistory());
+
         System.out.println(taskOne);
         System.out.println(taskTwo);
 
         System.out.println(epicOne);
         System.out.println(epicTwo);
+
+
+
     }
 }
