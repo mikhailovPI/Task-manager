@@ -17,13 +17,13 @@ public interface TaskManager {
     List<Task> listTask();
 
     //Получение задачи по индексу
-    Task getTask(int id);
+    Task getTask(long id);
 
     //Удаление всех задач
     void deleteTasks();
 
     //Удаление задачи по индексу
-    void removeTask(int id);
+    void removeTask(long id);
 
     //Создание подзадачи
     void creatSubtask(Subtask subtask);
@@ -35,13 +35,13 @@ public interface TaskManager {
     List<Subtask> listSubtask();
 
     //Получение подзадачи по индексу
-    Subtask getSubtask(int id);
+    Subtask getSubtask(long id);
 
     //Удаление всех подзадач
     void deleteSubtasks();
 
     //Удаление подзадачи по индексу
-    void removeSubtask(int id);
+    void removeSubtask(long id);
 
     //Создание эпика
     void creatEpic(Epic epic);
@@ -53,13 +53,13 @@ public interface TaskManager {
     List<Epic> listEpic();
 
     //Получение эпика по индексу
-    Epic getEpic(int id);
+    Epic getEpic(long id);
 
     //Удаление всех эпиков
     void deleteEpics();
 
     //Удаление эпика по индексу
-    void removeEpic(int epicId);
+    void removeEpic(long epicId);
 
     //Подзадачи эпика
     List<Subtask> getSubtaskByEpic(Epic epic);

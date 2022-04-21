@@ -11,11 +11,11 @@ import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private int index = 0;
+    private long index = 0;
 
-    private HashMap<Integer, Task> userTasks = new HashMap<>();
-    private HashMap<Integer, Subtask> userSubtasks = new HashMap<>();
-    private HashMap<Integer, Epic> userEpics = new HashMap<>();
+    private HashMap<Long, Task> userTasks = new HashMap<>();
+    private HashMap<Long, Subtask> userSubtasks = new HashMap<>();
+    private HashMap<Long, Epic> userEpics = new HashMap<>();
 
     private HistoryManager inMemoryHistoryManager = Managers.getHistoryDefault();
 
@@ -44,7 +44,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение задачи по индексу
     @Override
-    public Task getTask(int id) {
+    public Task getTask(long id) {
         Task task = userTasks.get(id);
         if (task != null) {
             inMemoryHistoryManager.add(task);
@@ -60,7 +60,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Удаление задачи по индексу
     @Override
-    public void removeTask(int id) {
+    public void removeTask(long id) {
         inMemoryHistoryManager.remove(id);
         userTasks.remove(id);
     }
@@ -99,7 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение подзадачи по индексу
     @Override
-    public Subtask getSubtask(int id) {
+    public Subtask getSubtask(long id) {
         Subtask subtask = userSubtasks.get(id);
         if (subtask != null) {
             inMemoryHistoryManager.add(subtask);
@@ -119,7 +119,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Удаление подзадачи по индексу
     @Override
-    public void removeSubtask(int id) {
+    public void removeSubtask(long id) {
         inMemoryHistoryManager.remove(id);
         userSubtasks.remove(id);
     }
@@ -149,7 +149,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Получение эпика по индексу
     @Override
-    public Epic getEpic(int id) {
+    public Epic getEpic(long id) {
         Epic epic = userEpics.get(id);
         if (epic != null) {
             inMemoryHistoryManager.add(epic);
@@ -166,7 +166,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Удаление эпика по индексу
     @Override
-    public void removeEpic(int id) {
+    public void removeEpic(long id) {
         inMemoryHistoryManager.remove(id);
         Epic epic = userEpics.get(id);
         userEpics.remove(id);

@@ -6,11 +6,11 @@ public class Task {
 
     private String nameTask;
     private String description;
-    private int id;
+    private long id;
     private StatusTask statusTask;
 
 
-    public Task(String nameTask, String description, int id, StatusTask statusTask) {
+    public Task(String nameTask, String description, long id, StatusTask statusTask) {
         this.nameTask = nameTask;
         this.description = description;
         this.id = id;
@@ -33,11 +33,11 @@ public class Task {
         this.description = description;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
