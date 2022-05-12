@@ -8,23 +8,23 @@ import task.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    private long index = 0;
+    protected static long index = 0;
 
-    private HashMap<Long, Task> userTasks = new HashMap<>();
-    private HashMap<Long, Subtask> userSubtasks = new HashMap<>();
-    private HashMap<Long, Epic> userEpics = new HashMap<>();
+    protected HashMap<Long, Task> userTasks = new HashMap<>();
+    protected HashMap<Long, Subtask> userSubtasks = new HashMap<>();
+    protected HashMap<Long, Epic> userEpics = new HashMap<>();
 
-    private HistoryManager inMemoryHistoryManager = Managers.getHistoryDefault();
+    protected HistoryManager inMemoryHistoryManager = Managers.getHistoryDefault();
 
     //Создание задачи
     @Override
-    public Task creatTask(Task task) {
+    public void addTask(Task task) {
         task.setId(++index);
         userTasks.put(task.getId(), task);
-        return task;
     }
 
     //Обновление задачи
@@ -67,7 +67,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Создание подзадачи
     @Override
-    public void creatSubtask(Subtask subtask) {
+    public void addSubtask(Subtask subtask) {
         Epic epic = userEpics.get(subtask.getEpicId());
         if (epic == null) {
             return;
@@ -126,7 +126,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //Создание эпика
     @Override
-    public void creatEpic(Epic epic) {
+    public void addEpic(Epic epic) {
         epic.setId(++index);
         userEpics.put(epic.getId(), epic);
         statusEpic(epic);
@@ -208,5 +208,20 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             epic.setStatus(StatusTask.IN_PROGRESS);
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        InMemoryTaskManager that = (InMemoryTaskManager) o;
+        return Objects.equals(userTasks, that.userTasks) && Objects.equals(userSubtasks, that.userSubtasks)
+                && Objects.equals(userEpics, that.userEpics)
+                && Objects.equals(inMemoryHistoryManager, that.inMemoryHistoryManager);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userTasks, userSubtasks, userEpics, inMemoryHistoryManager);
     }
 }

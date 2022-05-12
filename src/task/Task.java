@@ -1,5 +1,7 @@
 package task;
 
+import manager.TypeTask;
+
 import java.util.Objects;
 
 public class Task {
@@ -8,7 +10,6 @@ public class Task {
     private String description;
     private long id;
     private StatusTask statusTask;
-
 
     public Task(String nameTask, String description, long id, StatusTask statusTask) {
         this.nameTask = nameTask;
@@ -49,6 +50,10 @@ public class Task {
         this.statusTask = statusTask;
     }
 
+    public TypeTask getTypeTask() {
+        return TypeTask.TASK;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -74,6 +79,3 @@ public class Task {
                 '}';
     }
 }
-
-
-

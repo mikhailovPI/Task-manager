@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface TaskManager {
     //Создание задачи
-    Task creatTask(Task task);
+    void addTask(Task task);
 
     //Обновление задачи
     void updateTask(Task task);
@@ -26,7 +26,7 @@ public interface TaskManager {
     void removeTask(long id);
 
     //Создание подзадачи
-    void creatSubtask(Subtask subtask);
+    void addSubtask(Subtask subtask);
 
     //Обновление подзадачи
     void updateSubtask(Subtask subtask);
@@ -44,7 +44,7 @@ public interface TaskManager {
     void removeSubtask(long id);
 
     //Создание эпика
-    void creatEpic(Epic epic);
+    void addEpic(Epic epic);
 
     //Обновление эпика
     void updateEpic(Epic epic);

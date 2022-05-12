@@ -9,7 +9,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     private Node head; // Указатель на первый элемент списка
     private Node tail; //Указатель на последний элемент списка
     private int size = 0; //Размер списка
-    private Map<Long, Node> historyHashMap = new HashMap<>();
+    protected Map<Long, Node> historyHashMap = new HashMap<>();
 
     @Override
     public List<Task> getHistory() {
@@ -29,7 +29,6 @@ public class InMemoryHistoryManager implements HistoryManager {
             historyHashMap.remove(id);
         }
     }
-
 
     public void linkLast(Task task) {
         if (historyHashMap.containsKey(task.getId())) {

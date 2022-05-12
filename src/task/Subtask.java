@@ -1,5 +1,7 @@
 package task;
 
+import manager.TypeTask;
+
 public class Subtask extends Task {
 
     private long epicId;
@@ -7,6 +9,11 @@ public class Subtask extends Task {
     public Subtask(String nameTask, String description, long id, StatusTask statusTask, long epicId) {
         super(nameTask, description, id, statusTask);
         this.epicId = epicId;
+    }
+
+    @Override
+    public TypeTask getTypeTask() {
+        return TypeTask.SUBTASK;
     }
 
     public long getEpicId() {
