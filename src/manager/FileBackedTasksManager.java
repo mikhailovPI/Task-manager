@@ -15,15 +15,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private File file;
 
-    public FileBackedTasksManager(File file) {
-        this(file, false);
-    }
-
-    public FileBackedTasksManager(File file, boolean load) {
-        this.file = file;
-        if (load) {
-            load();
-        }
+    public FileBackedTasksManager(String filePath) {
+        file = new File(filePath);
     }
 
     @Override
@@ -43,6 +36,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Task task = super.getTask(id);
         save();
         return task;
+    }
+
+    @Override
+    public void deleteTasks() {
+        super.deleteTasks();
+        save();
     }
 
     @Override
@@ -71,6 +70,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
+    public void deleteSubtasks() {
+        super.deleteSubtasks();
+        save();
+    }
+
+    @Override
     public void removeSubtask(long id) {
         super.removeSubtask(id);
         save();
@@ -93,6 +98,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Epic epic = super.getEpic(id);
         save();
         return epic;
+    }
+
+    @Override
+    public void deleteEpics() {
+        super.deleteEpics();
+        save();
     }
 
     @Override
@@ -129,16 +140,17 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    // Восстановление из файл
     private void load() {
         long idMax = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             reader.readLine();
             while (true) {
                 String lineTask = reader.readLine();
+                if (lineTask.isBlank()) {
+                    break;
+                }
                 Task task = csv.fromString(lineTask);
                 long id = task.getId();
-                // запись задач
                 if (task.getTypeTask().equals(TypeTask.TASK)) {
                     userTasks.put(id, task);
                 } else if (task.getTypeTask().equals(TypeTask.SUBTASK)) {
@@ -151,15 +163,11 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if (idMax < id) {
                     idMax = id;
                 }
-                if (lineTask.isEmpty()) {
-                    break;
-                }
             }
-            // запись истории
-            reader.readLine(); // пропуск пустой строки
+
             String lineHistory = reader.readLine();
-            List<Integer> taskHistory = csv.historyFromString(lineHistory);
-            for (Integer idHistory : taskHistory) {
+            List<Long> taskHistory = csv.historyFromString(lineHistory);
+            for (Long idHistory : taskHistory) {
                 if (userTasks.containsKey(idHistory)) {
                     inMemoryHistoryManager.add(userTasks.get(idHistory));
                 } else if (userEpics.containsKey(idHistory)) {
@@ -171,12 +179,12 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         } catch (IOException e) {
             throw new ManagerSaveException(e.getMessage());
         }
-        index = idMax;
     }
 
     // Чтение из файла
-    public static FileBackedTasksManager loadFromFile(File file) {
-        FileBackedTasksManager manager = new FileBackedTasksManager(file, true);
+    public static FileBackedTasksManager loadFromFile(String backedFile) {
+        FileBackedTasksManager manager = new FileBackedTasksManager(backedFile);
+        manager.load();
         return manager;
     }
 }

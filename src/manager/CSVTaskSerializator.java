@@ -1,5 +1,6 @@
 package manager;
 
+import task.Epic;
 import task.StatusTask;
 import task.Subtask;
 import task.Task;
@@ -27,12 +28,16 @@ public class CSVTaskSerializator {
 
     public Task fromString(String value) {
         String[] typeTask = value.split(",");
-        Task task = new Task(typeTask[1], typeTask[4], Long.parseLong(typeTask[0]), StatusTask.valueOf(typeTask[3]));
-
+        Task task = new Task(typeTask[2], typeTask[4], Long.parseLong(typeTask[0]),
+                StatusTask.valueOf(typeTask[3]));
         if (typeTask[1].equals(String.valueOf(TypeTask.SUBTASK))) {
-            Subtask subtask = (Subtask) task;
-            subtask = new Subtask(typeTask[2], typeTask[4], Long.parseLong(typeTask[0]),
-                    StatusTask.valueOf(typeTask[3]), Integer.parseInt(typeTask[5]));
+            Subtask subtask = new Subtask(typeTask[2], typeTask[4], Long.parseLong(typeTask[0]),
+                    StatusTask.valueOf(typeTask[3]), Long.parseLong(typeTask[5]));
+            return subtask;
+        } else if (typeTask[1].equals(String.valueOf(TypeTask.EPIC))) {
+            Epic epic = new Epic(typeTask[2], typeTask[4], Long.parseLong(typeTask[0]),
+                    StatusTask.valueOf(typeTask[3]));
+            return epic;
         }
         return task;
     }
@@ -45,11 +50,11 @@ public class CSVTaskSerializator {
         return sb.toString();
     }
 
-    public List<Integer> historyFromString(String value) {
+    public List<Long> historyFromString(String value) {
         String[] id = value.split(",");
-        List<Integer> history = new ArrayList<>();
+        List<Long> history = new ArrayList<>();
         for (String i : id) {
-            history.add(Integer.valueOf(i));
+            history.add(Long.parseLong(i));
         }
         return history;
     }

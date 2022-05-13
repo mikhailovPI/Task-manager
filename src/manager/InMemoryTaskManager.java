@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class InMemoryTaskManager implements TaskManager {
 
-    protected static long index = 0;
+    protected long index = 0;
 
     protected HashMap<Long, Task> userTasks = new HashMap<>();
     protected HashMap<Long, Subtask> userSubtasks = new HashMap<>();
@@ -223,5 +223,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public int hashCode() {
         return Objects.hash(userTasks, userSubtasks, userEpics, inMemoryHistoryManager);
+    }
+
+    @Override
+    public String toString() {
+        return "InMemoryTaskManager{" +
+                "userTasks=" + userTasks +
+                ", userSubtasks=" + userSubtasks +
+                ", userEpics=" + userEpics +
+                ", inMemoryHistoryManager=" + inMemoryHistoryManager +
+                '}';
     }
 }

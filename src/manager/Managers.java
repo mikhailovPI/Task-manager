@@ -1,7 +1,5 @@
 package manager;
 
-import java.io.File;
-
 public class Managers {
 
     private static TaskManager taskManager;
@@ -9,7 +7,7 @@ public class Managers {
 
     public static TaskManager getDefault() {
         if (taskManager == null) {
-            taskManager = new FileBackedTasksManager(new File("resources/tasks.csv"));
+            taskManager = new FileBackedTasksManager("resources/tasks.csv");
         }
         return taskManager;
     }

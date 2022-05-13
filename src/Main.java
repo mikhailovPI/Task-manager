@@ -4,14 +4,13 @@ import task.StatusTask;
 import task.Subtask;
 import task.Task;
 
-import java.io.File;
-
 public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = Managers.getDefault();
         HistoryManager historyManager = Managers.getHistoryDefault();
-        TaskManager manager1 = new FileBackedTasksManager(new File("resources/tasks.csv"), true);
+
+        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile("resources/tasks.csv");
 
         Task taskOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW);
         Task taskTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.DONE);
@@ -38,25 +37,16 @@ public class Main {
         manager.addSubtask(subtaskTwo);
         manager.addSubtask(subtaskThree);
 
-        System.out.println(taskOne);
-        System.out.println(taskTwo);
-
-        System.out.println(epicOne);
-        System.out.println(epicTwo + "\n");
-
-        manager.getTask(1);
-        manager.getTask(2);
-        manager.getTask(3);
-        manager.getEpic(4);
-        manager.getEpic(5);
-        manager.getSubtask(6);
-        manager.getSubtask(7);
-        manager.getSubtask(8);
+        manager.getTask(taskOne.getId());
+        manager.getTask(taskTwo.getId());
+        manager.getTask(taskThree.getId());
+        manager.getEpic(epicOne.getId());
+        manager.getEpic(epicTwo.getId());
+        manager.getSubtask(subtaskOne.getId());
+        manager.getSubtask(subtaskTwo.getId());
+        manager.getSubtask(subtaskThree.getId());
 
         System.out.println(historyManager.getHistory());
-
-
-        System.out.println(manager.equals(manager1));
-        
+        System.out.println(fileBackedTasksManager);
     }
 }

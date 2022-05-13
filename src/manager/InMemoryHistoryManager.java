@@ -76,4 +76,14 @@ public class InMemoryHistoryManager implements HistoryManager {
         node.data = null;
         size--;
     }
+
+    @Override
+    public String toString() {
+        return "InMemoryHistoryManager{" +
+                "head=" + head +
+                ", tail=" + tail +
+                ", size=" + size +
+                ", historyHashMap=" + historyHashMap +
+                '}';
+    }
 }
