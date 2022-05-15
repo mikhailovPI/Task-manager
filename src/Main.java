@@ -4,13 +4,12 @@ import task.StatusTask;
 import task.Subtask;
 import task.Task;
 
+import static manager.CSVTaskSerializator.filePath;
+
 public class Main {
     public static void main(String[] args) {
 
         TaskManager manager = Managers.getDefault();
-        HistoryManager historyManager = Managers.getHistoryDefault();
-
-        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile("resources/tasks.csv");
 
         Task taskOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW);
         Task taskTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.DONE);
@@ -46,7 +45,8 @@ public class Main {
         manager.getSubtask(subtaskTwo.getId());
         manager.getSubtask(subtaskThree.getId());
 
-        System.out.println(historyManager.getHistory());
+        FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(filePath);
+
         System.out.println(fileBackedTasksManager);
     }
 }

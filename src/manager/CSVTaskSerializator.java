@@ -10,7 +10,9 @@ import java.util.List;
 
 public class CSVTaskSerializator {
 
-    public String toString(Task task) {
+    public static String filePath = "resources/tasks.csv";
+
+    public static String toString(Task task) {
         String[] taskАrray = new String[6];
         taskАrray[0] = String.valueOf(task.getId());
         taskАrray[1] = String.valueOf(task.getTypeTask());
@@ -26,7 +28,7 @@ public class CSVTaskSerializator {
         return stringTask;
     }
 
-    public Task fromString(String value) {
+    public static Task fromString(String value) {
         String[] typeTask = value.split(",");
         Task task = new Task(typeTask[2], typeTask[4], Long.parseLong(typeTask[0]),
                 StatusTask.valueOf(typeTask[3]));
@@ -50,7 +52,7 @@ public class CSVTaskSerializator {
         return sb.toString();
     }
 
-    public List<Long> historyFromString(String value) {
+    public static List<Long> historyFromString(String value) {
         String[] id = value.split(",");
         List<Long> history = new ArrayList<>();
         for (String i : id) {

@@ -11,8 +11,6 @@ import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
-    CSVTaskSerializator csv = new CSVTaskSerializator();
-
     private File file;
 
     public FileBackedTasksManager(String filePath) {
@@ -119,15 +117,15 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             writer.append(header);
             writer.newLine();
             for (Map.Entry<Long, Task> longTaskEntry : userTasks.entrySet()) {
-                writer.append(csv.toString(longTaskEntry.getValue()));
+                writer.append(CSVTaskSerializator.toString(longTaskEntry.getValue()));
                 writer.newLine();
             }
             for (Map.Entry<Long, Epic> longEpicEntry : userEpics.entrySet()) {
-                writer.append(csv.toString(longEpicEntry.getValue()));
+                writer.append(CSVTaskSerializator.toString(longEpicEntry.getValue()));
                 writer.newLine();
             }
             for (Map.Entry<Long, Subtask> longTaskEntry : userSubtasks.entrySet()) {
-                writer.append(csv.toString(longTaskEntry.getValue()));
+                writer.append(CSVTaskSerializator.toString(longTaskEntry.getValue()));
                 writer.newLine();
             }
             writer.newLine();
@@ -149,7 +147,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if (lineTask.isBlank()) {
                     break;
                 }
-                Task task = csv.fromString(lineTask);
+                Task task = CSVTaskSerializator.fromString(lineTask);
                 long id = task.getId();
                 if (task.getTypeTask().equals(TypeTask.TASK)) {
                     userTasks.put(id, task);
@@ -166,7 +164,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
 
             String lineHistory = reader.readLine();
-            List<Long> taskHistory = csv.historyFromString(lineHistory);
+            List<Long> taskHistory = CSVTaskSerializator.historyFromString(lineHistory);
             for (Long idHistory : taskHistory) {
                 if (userTasks.containsKey(idHistory)) {
                     inMemoryHistoryManager.add(userTasks.get(idHistory));

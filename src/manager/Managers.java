@@ -1,5 +1,7 @@
 package manager;
 
+import static manager.CSVTaskSerializator.filePath;
+
 public class Managers {
 
     private static TaskManager taskManager;
@@ -7,7 +9,7 @@ public class Managers {
 
     public static TaskManager getDefault() {
         if (taskManager == null) {
-            taskManager = new FileBackedTasksManager("resources/tasks.csv");
+            taskManager = new FileBackedTasksManager(filePath);
         }
         return taskManager;
     }
