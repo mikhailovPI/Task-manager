@@ -1,0 +1,14 @@
+id,type,name,status,description,epic,duration,startTime
+1,TASK,task 1,NEW,Описание Task 1,no epic,40,дата: 26 May 2022 время: 11:00
+2,TASK,task 2,DONE,Описание Task 2,no epic,30,дата: 25 May 2022 время: 10:20
+3,TASK,task 3,DONE,Описание Task 3,no epic,100,дата: 20 May 3000 время: 08:30
+4,TASK,task 10,NEW,Описание Task 10,no epic,10,дата: 28 May 2022 время: 11:00
+5,EPIC,Epic 1,DONE,Описание Epic 1,no epic,40,дата: 26 May 2022 время: 10:00
+6,EPIC,Epic 2,NEW,Описание Epic 2,no epic,40,дата: 26 May 2022 время: 10:00
+7,SUBTASK,Subtask 1,DONE,Описание Subtask 1,5,40,дата: 26 May 2022 время: 11:00
+8,SUBTASK,Subtask 2,DONE,Описание Subtask 2,5,40,дата: 23 May 2022 время: 11:00
+9,SUBTASK,Subtask 3,NEW,Описание Subtask 3,6,40,дата: 01 June 2022 время: 11:40
+10,SUBTASK,Subtask 4,DONE,Описание Subtask 4,5,40,дата: 23 May 2022 время: 11:00
+11,SUBTASK,Subtask 4,DONE,Описание Subtask 4,5,40,дата: 23 May 2022 время: 11:00
+
+3,5,6,7,8,9,

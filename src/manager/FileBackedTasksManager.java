@@ -113,7 +113,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     // Сохранение в файл
     private void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            String header = "id,type,name,status,description,epic";
+            String header = "id,type,name,status,description,epic,duration,startTime";
             writer.append(header);
             writer.newLine();
             for (Map.Entry<Long, Task> longTaskEntry : userTasks.entrySet()) {

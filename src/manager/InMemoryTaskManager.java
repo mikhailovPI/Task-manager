@@ -5,10 +5,9 @@ import task.StatusTask;
 import task.Subtask;
 import task.Task;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -17,6 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Long, Task> userTasks = new HashMap<>();
     protected HashMap<Long, Subtask> userSubtasks = new HashMap<>();
     protected HashMap<Long, Epic> userEpics = new HashMap<>();
+    protected Map<LocalDateTime, Task> prioritizedTasks = new TreeMap<>();
 
     protected HistoryManager inMemoryHistoryManager = Managers.getHistoryDefault();
 
@@ -135,7 +135,7 @@ public class InMemoryTaskManager implements TaskManager {
     //Обновление эпика
     @Override
     public void updateEpic(Epic epic) {
-        if (userEpics.containsKey(epic.getId())) {
+        if (!userEpics.containsKey(epic.getId())) {
             return;
         }
         userEpics.put(epic.getId(), epic);
@@ -178,52 +178,106 @@ public class InMemoryTaskManager implements TaskManager {
     //Подзадачи эпика
     @Override
     public List<Subtask> getSubtaskByEpic(Epic epic) {
-        return new ArrayList<Subtask>(epic.getListSubtask());
+        List<Subtask> list = new ArrayList<>(epic.getListSubtask());
+        return list;
     }
 
     //Определение статуса эпика
     @Override
     public void statusEpic(Epic epic) {
-        List<Subtask> subId = getSubtaskByEpic(epic);
-        ArrayList<Subtask> list = new ArrayList<>();
-        for (Subtask sub : subId) {
-            list.add(getSubtask(sub.getId()));
-        }
-        int counterNew = 0;
-        int counterDone = 0;
-        for (Subtask subtask : list) {
-            if (subtask.getStatus().equals("NEW")) {
-                counterNew += 1;
-            } else if (subtask.getStatus().equals("DONE")) {
-                counterDone += 1;
-            }
-        }
-        if (counterNew == list.size()) {
-            epic.setStatus(StatusTask.NEW);
-        } else if (counterDone == list.size()) {
-            epic.setStatus(StatusTask.DONE);
-        } else if (list.isEmpty()) {
-            epic.setStatus(StatusTask.NEW);
+        List<Subtask> listSubtask = new ArrayList<>(getSubtaskByEpic(epic));
+
+        if (epic == null) {
             return;
+        }
+        boolean a = listSubtask.stream().allMatch(Subtask -> Subtask.getStatus().equals(StatusTask.DONE));
+        boolean b = listSubtask.stream().allMatch(Subtask -> Subtask.getStatus().equals(StatusTask.NEW));
+        if (b) {
+            epic.setStatus(StatusTask.NEW);
+        } else if (a) {
+            epic.setStatus(StatusTask.DONE);
         } else {
             epic.setStatus(StatusTask.IN_PROGRESS);
         }
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InMemoryTaskManager that = (InMemoryTaskManager) o;
-        return Objects.equals(userTasks, that.userTasks) && Objects.equals(userSubtasks, that.userSubtasks)
-                && Objects.equals(userEpics, that.userEpics)
-                && Objects.equals(inMemoryHistoryManager, that.inMemoryHistoryManager);
+    public LocalDateTime getEndTime(Task task) {
+        LocalDateTime endTime;
+        if (task.getClass().equals(Subtask.class) || task.getClass().equals(Task.class)) {
+            endTime = task.getStartTime().plusMinutes(task.getDuration());
+        } else {
+            Epic epic = (Epic) task;
+            LocalDateTime startTime = startTimeEpics(epic);
+            Long duration = durationEpics(epic);
+            endTime = startTime.plusMinutes(duration);
+        }
+        return endTime;
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(userTasks, userSubtasks, userEpics, inMemoryHistoryManager);
+    public LocalDateTime startTimeEpics(Epic epic) {
+        LocalDateTime minStartTime = LocalDateTime.of(3000, 1, 1, 0, 0);
+        for (Subtask subtask : epic.getListSubtask()) {
+            if (minStartTime.isAfter(subtask.getStartTime())) {
+                minStartTime = subtask.getStartTime();
+            }
+            epic.setStartTime(minStartTime);
+        } return minStartTime;
     }
+
+    @Override
+    public Long durationEpics(Epic epic) {
+        LocalDateTime maxEndTime = LocalDateTime.of(1980, 1, 1, 0, 0);
+        for (Subtask subtaskEpic : epic.getListSubtask()) {
+            if (maxEndTime.isBefore(subtaskEpic.getStartTime().plusMinutes(subtaskEpic.getDuration()))) {
+                maxEndTime = subtaskEpic.getStartTime();
+            }
+        }
+        LocalDateTime startTime = startTimeEpics(epic);
+        Duration duration = Duration.between(startTime, maxEndTime);
+        Long durationEpicMinutes = duration.toMinutes();
+        epic.setDuration(durationEpicMinutes);
+        return durationEpicMinutes;
+    }
+
+    @Override
+    public List<Task> getPrioritizedTasks() {
+        List<Task> sortListTask = new ArrayList<>();
+        for (Task task: userTasks.values()) {
+            prioritizedTasks.put(task.getStartTime(), task);
+        }
+        for (Subtask subtask: userSubtasks.values()) {
+            prioritizedTasks.put(subtask.getStartTime(), subtask);
+        }
+        for (Task task: prioritizedTasks.values()) {
+            sortListTask.add(task);
+        }
+        return sortListTask;
+    }
+
+/*    @Override
+    public void timeCrossing(Task task) {
+        try {
+            for (Task oldTask : getPrioritizedTasks()) {
+                if(getEndTime(task).isAfter(oldTask.getStartTime()) &&
+                        getPrioritizedTasks().isBefore(getEndTime(oldTask))) {
+                    throw new RuntimeException();
+                } else if (task.getStartTime().isAfter(oldTask.getStartTime()) &&
+                        task.getStartTime().isBefore(oldTask.getEndTime())) {
+                    throw new RuntimeException();
+                } else if (task.getStartTime().isAfter(oldTask.getStartTime()) &&
+                        task.getEndTime().isBefore(oldTask.getEndTime())) {
+                    throw new RuntimeException();
+                } else if(oldTask.getStartTime().isAfter(task.getStartTime()) &&
+                        oldTask.getStartTime().isBefore(task.getEndTime())) {
+                    throw new RuntimeException();
+                }
+            }
+        } catch (RuntimeException e) {
+            throw new TaskTimeException(e.getMessage());
+        }
+    }*/
 
     @Override
     public String toString() {

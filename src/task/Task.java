@@ -2,6 +2,10 @@ package task;
 
 import manager.TypeTask;
 
+import java.time.DateTimeException;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -10,12 +14,17 @@ public class Task {
     private String description;
     private long id;
     private StatusTask statusTask;
+    private long duration;
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
 
-    public Task(String nameTask, String description, long id, StatusTask statusTask) {
+    public Task(String nameTask, String description, long id, StatusTask statusTask, long duration, LocalDateTime startTime) {
         this.nameTask = nameTask;
         this.description = description;
         this.id = id;
         this.statusTask = statusTask;
+        this.duration = duration;
+        this.startTime = startTime;
     }
 
     public String getNameTask() {
@@ -53,6 +62,24 @@ public class Task {
     public TypeTask getTypeTask() {
         return TypeTask.TASK;
     }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
+    }
+
+    public LocalDateTime getStartTime() {
+
+        return startTime;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
 
     @Override
     public boolean equals(Object o) {

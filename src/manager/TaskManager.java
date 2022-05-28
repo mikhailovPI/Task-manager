@@ -4,6 +4,7 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TaskManager {
@@ -66,4 +67,15 @@ public interface TaskManager {
 
     //Определение статуса эпика
     void statusEpic(Epic epic);
+
+    //Определение времени завершения задачи
+    LocalDateTime getEndTime(Task task);
+
+    LocalDateTime startTimeEpics(Epic epic);
+
+    Long durationEpics(Epic epic);
+
+    List<Task> getPrioritizedTasks();
+
+    void timeCrossing(Task task);
 }
