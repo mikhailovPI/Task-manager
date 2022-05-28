@@ -68,14 +68,10 @@ public interface TaskManager {
     //Определение статуса эпика
     void statusEpic(Epic epic);
 
-    //Определение времени завершения задачи
-    LocalDateTime getEndTime(Task task);
 
-    LocalDateTime startTimeEpics(Epic epic);
-
-    Long durationEpics(Epic epic);
-
+    //Сортировка задач по приоритету
     List<Task> getPrioritizedTasks();
 
+    //Определение пересечения времени задач
     void timeCrossing(Task task);
 }

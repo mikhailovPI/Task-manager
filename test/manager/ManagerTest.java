@@ -26,38 +26,33 @@ abstract class ManagerTest<T extends TaskManager> {
 
     @BeforeEach
     void creatTaskForTest() {
-        taskTestOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW,
-                40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-        taskTestTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.NEW,
-                40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
+        taskTestOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW, 40,
+                LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
+        taskTestTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.NEW, 40,
+                LocalDateTime.of(2022, Month.MAY, 26, 12, 0));
 
         taskManager.addTask(taskTestOne);
         taskManager.addTask(taskTestTwo);
 
-        epicTestOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.NEW,
-                40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-        epicTestTwo = new Epic("Epic 2", "Описание Epic 2", 0, StatusTask.NEW,
-                40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-
+        epicTestTwo = new Epic("Epic 2", "Описание Epic 2", 0, StatusTask.NEW, 100,
+                LocalDateTime.of(2022, Month.MAY, 3, 11, 0));
+        epicTestOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.NEW, 100,
+                LocalDateTime.of(2022, Month.MAY, 2, 11, 0));
 
         taskManager.addEpic(epicTestOne);
         taskManager.addEpic(epicTestTwo);
 
         subtaskTestOne = new Subtask("Subtask 1", "Описание Subtask 1", 0,
-                StatusTask.IN_PROGRESS, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 11, 0), epicTestOne.getId());
+                StatusTask.DONE, 40, LocalDateTime.of(2022, Month.MAY, 2, 11, 0), epicTestOne.getId());
 
         subtaskTestTwo = new Subtask("Subtask 2", "Описание Subtask 2", 0,
-                StatusTask.NEW, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 11, 0), epicTestTwo.getId());
+                StatusTask.NEW, 40, LocalDateTime.of(2022, Month.MAY, 3, 11, 0), epicTestTwo.getId());
 
         subtaskTestThree = new Subtask("Subtask 3", "Описание Subtask 3", 0,
-                StatusTask.IN_PROGRESS, 40,
-                LocalDateTime.of(2022, Month.MAY, 23, 11, 0), epicTestTwo.getId());
+                StatusTask.IN_PROGRESS, 40, LocalDateTime.of(2022, Month.MAY, 3, 12, 0), epicTestTwo.getId());
 
-        subtaskTestFour = new Subtask("Subtask 4", "Описание Subtask 4", 0,
-                StatusTask.IN_PROGRESS, 40,
-                LocalDateTime.of(2022, Month.MAY, 23, 11, 0), epicTestOne.getId());
+        subtaskTestFour = new Subtask("Subtask 2", "Описание Subtask 2", 0,
+                StatusTask.DONE, 40, LocalDateTime.of(2022, Month.MAY, 2, 12, 0), epicTestOne.getId());
 
         taskManager.addSubtask(subtaskTestOne);
         taskManager.addSubtask(subtaskTestTwo);
@@ -173,7 +168,7 @@ abstract class ManagerTest<T extends TaskManager> {
     @Test
     void getEpicTest() {
         assertNotNull(taskManager.listEpic());
-        assertEquals(epicTestOne, taskManager.getEpic(3), "Не удалось получить эпик по данному индексу");
+        assertEquals(epicTestTwo, taskManager.getEpic(4), "Не удалось получить эпик по данному индексу");
     }
 
     @Test
@@ -293,30 +288,34 @@ abstract class ManagerTest<T extends TaskManager> {
     }
 
     @Test
-    void getEndTimeTaskTest() {
-        assertEquals(LocalDateTime.of(2022, Month.MAY, 26, 11, 0).plusMinutes(40),
-                taskManager.getEndTime(taskTestOne),
-                "Время окончания задачи должно совпадать. Проверь startTime и duration");
+    void getPrioritizedTasksTest() {
+        assertNotNull(taskManager.getPrioritizedTasks());
+        assertEquals(6, taskManager.getPrioritizedTasks().size());
     }
 
-    @Test
-    void getEndTimeEpicTest() {
-        assertEquals(LocalDateTime.of(2022, Month.MAY, 23, 11, 0).plusMinutes(4320),
-                taskManager.getEndTime(epicTestOne),
-                "Время окончания задачи должно совпадать. Проверь startTime и duration");
-    }
+/*    @Test
+    void timeCrossingTest() {
+        Task taskTest1 = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW,
+                40, LocalDateTime.of(2022, Month.MAY, 26, 10, 0));
+        Task taskTest2 = new Task("task 2", "Описание Task 2", 0, StatusTask.NEW,
+                40, LocalDateTime.of(2022, Month.MAY, 26, 10, 0));
 
-    @Test
-    void startTimeEpicsTest () {
-        assertEquals(LocalDateTime.of(2022, Month.MAY, 23, 11, 0),
-                taskManager.startTimeEpics(epicTestOne),
-                "Время начала эпика должно совпадать. Проверь startTime");
-    }
+        taskManager.addTask(taskTest1);
+        taskManager.addTask(taskTest2);
 
-    @Test
-    void durationEpicsTest () {
-        assertEquals(4320L, taskManager.durationEpics(epicTestOne),
-                "Продолжительность эпика должно совпадать. Проверь duration");
+        Subtask subtaskTest1 = new Subtask("Subtask 1", "Описание Subtask 1", 0,
+                StatusTask.IN_PROGRESS, 40,
+                LocalDateTime.of(2022, Month.MAY, 2, 10, 0), epicTestOne.getId());
 
-    }
+        Subtask subtaskTest2 = new Subtask("Subtask 2", "Описание Subtask 2", 0,
+                StatusTask.NEW, 40,
+                LocalDateTime.of(2022, Month.MAY, 3, 10, 0), epicTestTwo.getId());
+        taskManager.addSubtask(subtaskTest1);
+        taskManager.addSubtask(subtaskTest2);
+
+        assertThrows(RuntimeException.class, () -> {
+            taskManager.timeCrossing(taskTest2);
+        }, "Не можем добавить эту задачу.");
+    }*/
+
 }

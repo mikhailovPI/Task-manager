@@ -36,9 +36,6 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             BufferedReader reader = new BufferedReader(new FileReader("resources/tasks_test.csv"));
             reader.readLine();
             assertNull(reader.readLine());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -54,9 +51,6 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             reader.readLine();
             assertEquals("1,TASK,task 1,NEW,Описание Task 1,no epic,40,дата: 26 May 2022 время: 11:00",
                     reader.readLine());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -65,19 +59,13 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
     @Test
     public void saveToFileOneEpicTest() {
         try {
-            epicTestOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.NEW,
-                    40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-            taskManager.addEpic(epicTestOne);
             BufferedReader reader = new BufferedReader(new FileReader("resources/tasks_test.csv"));
             reader.readLine();
             reader.readLine();
             reader.readLine();
-
-            assertEquals("3,EPIC,Epic 1,IN_PROGRESS,Описание Epic 1,no epic,40,дата: 26 May 2022 время: 11:00",
+            assertEquals("3,EPIC,Epic 1,DONE,Описание Epic 1,no epic,100,дата: 02 May 2022 время: 11:00",
                     reader.readLine());
 
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -95,11 +83,8 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             reader.readLine();
             reader.readLine();
             reader.readLine();
-            assertEquals("5,SUBTASK,Subtask 1,IN_PROGRESS,Описание Subtask 1,3,40,дата: 26 May 2022 время: 11:00",
+            assertEquals("5,SUBTASK,Subtask 1,DONE,Описание Subtask 1,3,40,дата: 02 May 2022 время: 11:00",
                     reader.readLine());
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -118,8 +103,6 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             userTasks.put(task.getId(), task);
             assertEquals("Task{nameTask='task 1', description='Описание Task 1', id=1, status='NEW'}",
                     userTasks.get(task.getId()).toString(), "Возвращаемая задача не совпадает");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -140,10 +123,8 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             String line = bufferedReader.readLine();
             Task subtask = CSVTaskSerializator.fromString(line);
             userSubtask.put(subtask.getId(), subtask);
-            assertEquals("Task{nameTask='Subtask 1', description='Описание Subtask 1', id=5, status='IN_PROGRESS'}",
+            assertEquals("Task{nameTask='Subtask 1', description='Описание Subtask 1', id=5, status='DONE'}",
                     userSubtask.get(subtask.getId()).toString(), "Возвращаемая задача не совпадает");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,10 +143,8 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             String line = bufferedReader.readLine();
             Task task = CSVTaskSerializator.fromString(line);
             userEpic.put(task.getId(), task);
-            assertEquals("Task{nameTask='Epic 1', description='Описание Epic 1', id=3, status='IN_PROGRESS'}",
+            assertEquals("Task{nameTask='Epic 1', description='Описание Epic 1', id=3, status='DONE'}",
                     userEpic.get(task.getId()).toString(), "Возвращаемая задача не совпадает");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -194,8 +173,6 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
             String line = bufferedReader.readLine();
             List<Long> taskHistory = CSVTaskSerializator.historyFromString(line);
             assertEquals(6, taskHistory.size(), "Количество задач в истории должно совпадать");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
