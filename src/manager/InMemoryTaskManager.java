@@ -22,11 +22,11 @@ public class InMemoryTaskManager implements TaskManager {
     //Создание задачи
     @Override
     public void addTask(Task task) {
-        timeCrossing(task);
         task.setId(++index);
         userTasks.put(task.getId(), task);
         task.getEndTime();
         getPrioritizedTasks();
+        timeCrossing(task);
     }
 
     //Обновление задачи
@@ -35,10 +35,10 @@ public class InMemoryTaskManager implements TaskManager {
         if (!userTasks.containsKey(task.getId())) {
             return;
         }
-        timeCrossing(task);
         userTasks.put(task.getId(), task);
-        getPrioritizedTasks().put(task.getStartTime(), task);
         task.getEndTime();
+        getPrioritizedTasks();
+        timeCrossing(task);
     }
 
     //Получение списка всех задач
@@ -61,23 +61,14 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteTasks() {
         userTasks.clear();
-        getPrioritizedTasks().clear();
-        for (Task task : userTasks.values()) {
-            inMemoryHistoryManager.remove(task.getId());
-        }
     }
 
     //Удаление задачи по индексу
     @Override
     public void removeTask(long id) {
-        for (Task task : userTasks.values()) {
-            if (id == task.getId()) {
-                getPrioritizedTasks().remove(task.getStartTime());
-                break;
-            }
-        }
         inMemoryHistoryManager.remove(id);
         userTasks.remove(id);
+        getPrioritizedTasks();
     }
 
     //Создание подзадачи
@@ -87,13 +78,13 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             return;
         }
-        timeCrossing(subtask);
         subtask.setId(++index);
         userSubtasks.put(subtask.getId(), subtask);
         epic.getListSubtask().add(subtask);
-        getPrioritizedTasks();
         statusEpic(epic);
         subtask.getEndTime();
+        getPrioritizedTasks();
+        timeCrossing(subtask);
     }
 
     //Обновление подзадачи
@@ -102,14 +93,14 @@ public class InMemoryTaskManager implements TaskManager {
         if (!userSubtasks.containsKey(subtask.getId())) {
             return;
         }
-        timeCrossing(subtask);
         Epic epic = userEpics.get(subtask.getEpicId());
         epic.getListSubtask().remove(userSubtasks.get(subtask.getId()));
         userSubtasks.put(subtask.getId(), subtask);
-        getPrioritizedTasks().put(subtask.getStartTime(), subtask);
         epic.getListSubtask().add(subtask);
         statusEpic(epic);
         subtask.getEndTime();
+        getPrioritizedTasks();
+        timeCrossing(subtask);
     }
 
     //Получение списка всех подзадач
@@ -136,28 +127,13 @@ public class InMemoryTaskManager implements TaskManager {
             epic.getListSubtask().clear();
             statusEpic(epic);
         }
-        getPrioritizedTasks().clear();
-        for (Subtask subtask : userSubtasks.values()) {
-            inMemoryHistoryManager.remove(subtask.getId());
-        }
     }
 
     //Удаление подзадачи по индексу
     @Override
     public void removeSubtask(long id) {
-        for (Subtask subtask : userSubtasks.values()) {
-            if (id == subtask.getId()) {
-                Epic epic = userEpics.get(subtask.getEpicId());
-                epic.getListSubtask().remove(subtask);
-                getPrioritizedTasks().remove(subtask.getStartTime());
-                epic.getDuration();
-                epic.getStartTime();
-                epic.getEndTime();
-                break;
-            }
-        }
-        userSubtasks.remove(id);
         inMemoryHistoryManager.remove(id);
+        userSubtasks.remove(id);
         getPrioritizedTasks();
     }
 
@@ -201,9 +177,6 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteEpics() {
         userEpics.clear();
         userSubtasks.clear();
-        for (Epic epic : userEpics.values()) {
-            inMemoryHistoryManager.remove(epic.getId());
-        }
     }
 
     //Удаление эпика по индексу
@@ -243,14 +216,9 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    @Override
-    public List<Task> getHistory() {
-        return inMemoryHistoryManager.getHistory();
-    }
-
     //Сортировка задач по приоритету
     @Override
-    public Map<LocalDateTime, Task> getPrioritizedTasks() {
+    public List<Task> getPrioritizedTasks() {
         List<Task> sortListTask = new ArrayList<>();
         for (Task task : userTasks.values()) {
             prioritizedTasks.put(task.getStartTime(), task);
@@ -258,17 +226,31 @@ public class InMemoryTaskManager implements TaskManager {
         for (Subtask subtask : userSubtasks.values()) {
             prioritizedTasks.put(subtask.getStartTime(), subtask);
         }
-        return prioritizedTasks;
+        sortListTask.addAll(prioritizedTasks.values());
+        return sortListTask;
     }
 
     //Определение пересечения времени задач
     @Override
     public void timeCrossing(Task task) {
-        for (Task oldTask : getPrioritizedTasks().values()) {
-            if (task.getEndTime().isAfter(oldTask.getStartTime())
-                    && task.getStartTime().isBefore(oldTask.getEndTime())) {
-                throw new TaskTimeException();
+        try {
+            for (Task oldTask : getPrioritizedTasks()) {
+                if(task.getEndTime().isAfter(oldTask.getStartTime()) &&
+                        task.getEndTime().isBefore(oldTask.getEndTime())) {
+                    throw new RuntimeException();
+                } else if (task.getStartTime().isAfter(oldTask.getStartTime()) &&
+                        task.getStartTime().isBefore(oldTask.getEndTime())) {
+                    throw new RuntimeException();
+                } else if (task.getStartTime().isAfter(oldTask.getStartTime()) &&
+                        task.getEndTime().isBefore(oldTask.getEndTime())) {
+                    throw new RuntimeException();
+                } else if(oldTask.getStartTime().isAfter(task.getStartTime()) &&
+                        oldTask.getStartTime().isBefore(task.getEndTime())) {
+                    throw new RuntimeException();
+                }
             }
+        } catch (RuntimeException e) {
+            throw new TaskTimeException(e.getMessage());
         }
     }
 
