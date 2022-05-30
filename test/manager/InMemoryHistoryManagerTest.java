@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest  {
 
-    InMemoryTaskManager taskManager = new InMemoryTaskManager();;
+    TaskManager taskManager = new InMemoryTaskManager();
     InMemoryHistoryManager historyManager;
     Task taskTestOne;
     Task taskTestTwo;
@@ -40,7 +40,6 @@ class InMemoryHistoryManagerTest  {
         epicTestTwo = new Epic("Epic 2", "Описание Epic 2", 0, StatusTask.NEW,
                 40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
 
-
         taskManager.addEpic(epicTestOne);
         taskManager.addEpic(epicTestTwo);
 
@@ -51,7 +50,6 @@ class InMemoryHistoryManagerTest  {
         subtaskTestTwo = new Subtask("Subtask 2", "Описание Subtask 2", 0,
                 StatusTask.NEW, 40,
                 LocalDateTime.of(2022, Month.MAY, 26, 11, 0), epicTestTwo.getId());
-
 
         taskManager.addSubtask(subtaskTestOne);
         taskManager.addSubtask(subtaskTestTwo);
@@ -105,7 +103,6 @@ class InMemoryHistoryManagerTest  {
         historyManager.add(subtaskTestTwo);
         historyManager.add(taskTestOne);
         historyManager.add(epicTestOne);
-
 
         assertFalse(historyManager.getHistory().isEmpty(), "Список истории пустой");
         assertEquals(3, historyManager.getHistory().size(), "Ожидался другой размер списка");

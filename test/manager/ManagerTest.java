@@ -293,7 +293,81 @@ abstract class ManagerTest<T extends TaskManager> {
         assertEquals(6, taskManager.getPrioritizedTasks().size());
     }
 
-/*    @Test
+    @Test
+    void removeTaskFromPrioritizedListTest() {
+        taskManager.removeSubtask(subtaskTestOne.getId());
+        taskManager.removeTask(taskTestOne.getId());
+        assertNotNull(taskManager.getPrioritizedTasks());
+        assertEquals(4, taskManager.getPrioritizedTasks().size());
+    }
+
+    @Test
+    void updateTaskFromPrioritizedListTest() {
+        Task taskTestUpdate = new Task("Task 10", "Описание task 10", 1,
+                StatusTask.IN_PROGRESS, 40,
+                LocalDateTime.of(2020, Month.MAY, 1, 10, 0));
+        taskManager.updateTask(taskTestUpdate);
+
+        assertNotNull(taskManager.getPrioritizedTasks());
+        assertEquals(new Task("Task 10", "Описание task 10", 1,
+                        StatusTask.IN_PROGRESS, 40,
+                        LocalDateTime.of(2020, Month.MAY, 1, 10, 0)),
+                taskManager.getPrioritizedTasks().get(taskTestUpdate.getStartTime()));
+    }
+
+    @Test
+    void getTaskByWrongIdTest() {
+        assertNull(taskManager.getTask(epicTestOne.getId()), "Такая задача существует");
+    }
+
+    @Test
+    void getSubtaskByWrongIdTest() {
+        assertNull(taskManager.getSubtask(epicTestOne.getId()), "Такая подзадача существует");
+    }
+
+    @Test
+    void getEpicByWrongIdTest() {
+        assertNull(taskManager.getEpic(taskTestOne.getId()), "Такой эпик существует");
+    }
+
+    @Test
+    void removeTaskByWrongIdTest() {
+        taskManager.removeTask(epicTestOne.getId());
+        assertEquals(2, taskManager.listTask().size());
+    }
+
+    @Test
+    void removeSubtaskByWrongIdTest() {
+        taskManager.removeSubtask(epicTestOne.getId());
+        assertEquals(4, taskManager.listSubtask().size());
+    }
+
+    @Test
+    void getHistoryTest() {
+        taskManager.getTask(taskTestOne.getId());
+        taskManager.getTask(taskTestTwo.getId());
+        taskManager.getSubtask(subtaskTestTwo.getId());
+        taskManager.getEpic(epicTestTwo.getId());
+
+        assertEquals(4, taskManager.getHistory().size());
+    }
+
+    @Test
+    void removeTaskFromHistoryTest() {
+        taskManager.getTask(taskTestOne.getId());
+        taskManager.getTask(taskTestTwo.getId());
+        taskManager.getSubtask(subtaskTestTwo.getId());
+        taskManager.getSubtask(subtaskTestOne.getId());
+        taskManager.getEpic(epicTestTwo.getId());
+
+        taskManager.removeTask(taskTestOne.getId());
+        taskManager.removeTask(taskTestTwo.getId());
+        taskManager.removeEpic(epicTestTwo.getId());
+
+        assertEquals(2, taskManager.getHistory().size());
+    }
+
+    @Test
     void timeCrossingTest() {
         Task taskTest1 = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW,
                 40, LocalDateTime.of(2022, Month.MAY, 26, 10, 0));
@@ -301,21 +375,10 @@ abstract class ManagerTest<T extends TaskManager> {
                 40, LocalDateTime.of(2022, Month.MAY, 26, 10, 0));
 
         taskManager.addTask(taskTest1);
-        taskManager.addTask(taskTest2);
 
-        Subtask subtaskTest1 = new Subtask("Subtask 1", "Описание Subtask 1", 0,
-                StatusTask.IN_PROGRESS, 40,
-                LocalDateTime.of(2022, Month.MAY, 2, 10, 0), epicTestOne.getId());
-
-        Subtask subtaskTest2 = new Subtask("Subtask 2", "Описание Subtask 2", 0,
-                StatusTask.NEW, 40,
-                LocalDateTime.of(2022, Month.MAY, 3, 10, 0), epicTestTwo.getId());
-        taskManager.addSubtask(subtaskTest1);
-        taskManager.addSubtask(subtaskTest2);
-
-        assertThrows(RuntimeException.class, () -> {
-            taskManager.timeCrossing(taskTest2);
-        }, "Не можем добавить эту задачу.");
-    }*/
-
+        Throwable throwable = assertThrows(TaskTimeException.class, () -> {
+            taskManager.addTask(taskTest2);
+        });
+        assertNotNull(throwable.getMessage());
+    }
 }

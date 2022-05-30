@@ -18,19 +18,12 @@ public class Main {
                 LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
         Task taskTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.DONE, 40,
                 LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-        Task taskThree = new Task("task 3", "Описание Task 3", 0, StatusTask.DONE, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-        Task taskFour = new Task("task 10", "Описание Task 10", 4, StatusTask.NEW, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-
 
         manager.addTask(taskOne);
         manager.addTask(taskTwo);
-        manager.addTask(taskThree);
-        manager.addTask(taskFour);
 
         Epic epicOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.DONE, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 10, 00));
+                LocalDateTime.of(2022, Month.MAY, 26, 10, 0));
 
         manager.addEpic(epicOne);
 
@@ -53,14 +46,14 @@ public class Main {
         manager.addSubtask(subtaskFour);
         manager.addSubtask(subtaskFive);
 
-        manager.getTask(taskThree.getId());
+        manager.getTask(taskOne.getId());
+        manager.getTask(taskTwo.getId());
         manager.getEpic(epicOne.getId());
         manager.getSubtask(subtaskOne.getId());
         manager.getSubtask(subtaskTwo.getId());
 
-        System.out.println(epicOne.startTimeEpics());
-        System.out.println(epicOne.durationEpics());
-        System.out.println(epicOne.getEndTime());
+        System.out.println(taskOne.getEndTime());
+
 
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(filePath);
 
