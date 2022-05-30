@@ -14,8 +14,13 @@ public class Task {
     private String description;
     private long id;
     private StatusTask statusTask;
-    protected long duration;
-    protected LocalDateTime startTime;
+    private long duration;
+    private LocalDateTime startTime;
+
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
+
     protected LocalDateTime endTime;
 
     public Task(String nameTask, String description, long id, StatusTask statusTask, long duration, LocalDateTime startTime) {
@@ -72,7 +77,6 @@ public class Task {
     }
 
     public LocalDateTime getStartTime() {
-
         return startTime;
     }
 

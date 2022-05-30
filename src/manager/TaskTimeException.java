@@ -2,7 +2,12 @@ package manager;
 
 public class TaskTimeException extends RuntimeException {
 
-    public TaskTimeException(String message) {
-        super("Попробуйте другие временные интервалы");
+    public TaskTimeException() {
+        getMessage();
+    }
+
+    @Override
+    public String getMessage() {
+        return "В это время выполняется другая задача.";
     }
 }
