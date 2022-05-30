@@ -379,6 +379,7 @@ abstract class ManagerTest<T extends TaskManager> {
         Throwable throwable = assertThrows(TaskTimeException.class, () -> {
             taskManager.addTask(taskTest2);
         });
+
         assertNotNull(throwable.getMessage());
     }
 }
