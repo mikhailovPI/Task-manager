@@ -1,6 +1,6 @@
 package task;
 
-import manager.taskManager.InMemoryTaskManager;
+import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -21,7 +21,7 @@ class EpicTest {
     void creatTaskForTest () {
         taskManager = new InMemoryTaskManager();
         epicTestOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.NEW,
-                40, LocalDateTime.of(2022, Month.MAY, 3, 9, 0));
+                40, LocalDateTime.of(2022, Month.MAY, 3, 15, 0));
         taskManager.addEpic(epicTestOne);
 
         subtaskTestOne = new Subtask("Subtask 1", "Описание Subtask 1", 0,
