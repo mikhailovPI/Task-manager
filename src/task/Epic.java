@@ -1,7 +1,7 @@
 package task;
 
 
-import manager.TypeTask;
+import manager.saveToFile.TypeTask;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -23,35 +23,26 @@ public class Epic extends Task {
 
 
     @Override
-    public LocalDateTime getEndTime() {
-        LocalDateTime startTime = startTimeEpics();
-        Long durationEpics = durationEpics();
-        endTime = startTime.plusMinutes(durationEpics);
-        return endTime;
-    }
-
-    public LocalDateTime startTimeEpics() {
+    public LocalDateTime getStartTime() {
         LocalDateTime minStartTime = LocalDateTime.of(3000, 1, 1, 0, 0);
         for (Subtask subtask : getListSubtask()) {
             if (minStartTime.isAfter(subtask.getStartTime())) {
                 minStartTime = subtask.getStartTime();
             }
-            startTime = minStartTime;
         }
         return minStartTime;
     }
 
-    public Long durationEpics() {
+
+    @Override
+    public long getDuration() {
         LocalDateTime maxEndTime = LocalDateTime.of(1980, 1, 1, 0, 0);
         for (Subtask subtaskEpic : getListSubtask()) {
             if (maxEndTime.isBefore(subtaskEpic.getStartTime().plusMinutes(subtaskEpic.getDuration()))) {
                 maxEndTime = subtaskEpic.getStartTime().plusMinutes(subtaskEpic.getDuration());
             }
-            LocalDateTime startTime = startTimeEpics();
-            Long between = Duration.between(startTime, maxEndTime).toMinutes();
-            duration = between;
         }
-        return duration;
+        return Duration.between(getStartTime(), maxEndTime).toMinutes();
     }
 
     public ArrayList<Subtask> getListSubtask() {

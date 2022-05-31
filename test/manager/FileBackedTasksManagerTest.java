@@ -1,9 +1,10 @@
 
 package manager;
 
+import manager.saveToFile.CSVTaskSerializator;
+import manager.saveToFile.FileBackedTasksManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import task.Epic;
 import task.StatusTask;
 import task.Subtask;
 import task.Task;
@@ -45,7 +46,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
     public void saveToFileOneTaskTest() {
         try {
             taskTestOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW,
-                    40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
+                    40, LocalDateTime.of(2022, Month.MAY, 27, 11, 0));
             taskManager.addTask(taskTestOne);
             BufferedReader reader = new BufferedReader(new FileReader("resources/tasks_test.csv"));
             reader.readLine();
@@ -75,7 +76,7 @@ class FileBackedTasksManagerTest extends ManagerTest<FileBackedTasksManager> {
     public void saveToFileOneSubtaskTest() {
         try {
             subtaskTestOne = new Subtask("Subtask 1", "Описание Subtask 1", 0, StatusTask.IN_PROGRESS, 40,
-                    LocalDateTime.of(2022, Month.MAY, 26, 11, 0), epicTestOne.getId());
+                    LocalDateTime.of(2022, Month.MAY, 25, 11, 0), epicTestOne.getId());
             taskManager.addSubtask(subtaskTestOne);
             BufferedReader reader = new BufferedReader(new FileReader("resources/tasks_test.csv"));
             reader.readLine();

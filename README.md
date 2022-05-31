@@ -8,7 +8,9 @@
 2. Краткое описание;
 3. Уникальный идентификационный номер;
 4. Статус (New, In_progress, Done);
-5. Подзадачи имеют индекс эпика, которому они принадлежат.
+5. Подзадачи имеют индекс эпика, которому они принадлежат;
+6. Продолжительность выполнения;
+7. Ориентировочное время начала выполнения;
 
 Программа имеет следующие функции:
 1. Создать задачу/подзадачу/эпик;
@@ -20,6 +22,7 @@
 7. Получить список всех подзадач эпика;
 8. Посмотреть историю просмотра задач;
 9. Запись (чтение) задач/подзадач/эпиков в (из) файл(а);
+10. Отсортировать список задач по времени;
 
 Для хранения истории просмотров задач реализованы методы, позволяющие реализовать алгоритмическую сложность О(1).
 Это достигается реализацией двусвязанного списка и HashMap.
@@ -28,6 +31,11 @@
 
 ```java
 package manager;
+
+import manager.history.InMemoryHistoryManager;
+import manager.interfaceClass.HistoryManager;
+import manager.interfaceClass.TaskManager;
+import manager.taskManager.InMemoryTaskManager;
 
 public class Managers {
 
@@ -42,10 +50,10 @@ public class Managers {
 ....
 //Получение задачи по индексу
 @Override
-public Task getTask(int id) {
-    if (userTasks.containsKey(id)) {
+public Task getTask(int id){
+        if(userTasks.containsKey(id)){
         inMemoryHistoryManager.add(userTasks.get(id));
-    }
+        }
         return userTasks.get(id);
-}
+        }
 ```

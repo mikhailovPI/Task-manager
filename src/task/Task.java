@@ -1,11 +1,8 @@
 package task;
 
-import manager.TypeTask;
+import manager.saveToFile.TypeTask;
 
-import java.time.DateTimeException;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class Task {
@@ -14,8 +11,8 @@ public class Task {
     private String description;
     private long id;
     private StatusTask statusTask;
-    protected long duration;
-    protected LocalDateTime startTime;
+    private long duration;
+    private LocalDateTime startTime;
     protected LocalDateTime endTime;
 
     public Task(String nameTask, String description, long id, StatusTask statusTask, long duration, LocalDateTime startTime) {
@@ -72,7 +69,6 @@ public class Task {
     }
 
     public LocalDateTime getStartTime() {
-
         return startTime;
     }
 
@@ -83,7 +79,6 @@ public class Task {
     public LocalDateTime getEndTime() {
         return getStartTime().plusMinutes(getDuration());
     }
-
 
     @Override
     public boolean equals(Object o) {

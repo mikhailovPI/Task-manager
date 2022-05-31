@@ -1,4 +1,4 @@
-package manager;
+package manager.interfaceClass;
 
 import task.Epic;
 import task.Subtask;
@@ -6,6 +6,7 @@ import task.Task;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 public interface TaskManager {
     //Создание задачи
@@ -68,9 +69,10 @@ public interface TaskManager {
     //Определение статуса эпика
     void statusEpic(Epic epic);
 
+    List<Task> getHistory();
 
     //Сортировка задач по приоритету
-    List<Task> getPrioritizedTasks();
+    Map<LocalDateTime, Task> getPrioritizedTasks();
 
     //Определение пересечения времени задач
     void timeCrossing(Task task);

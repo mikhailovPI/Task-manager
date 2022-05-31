@@ -1,6 +1,7 @@
 
 package manager;
 
+import manager.history.InMemoryHistoryManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Epic;
@@ -10,12 +11,12 @@ import task.Task;
 
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class InMemoryHistoryManagerTest  {
 
-    InMemoryTaskManager taskManager = new InMemoryTaskManager();;
     InMemoryHistoryManager historyManager;
     Task taskTestOne;
     Task taskTestTwo;
@@ -27,34 +28,23 @@ class InMemoryHistoryManagerTest  {
     @BeforeEach
     void init() {
         historyManager = new InMemoryHistoryManager();
-        taskTestOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW,
+        taskTestOne = new Task("task 1", "Описание Task 1", 1, StatusTask.NEW,
                 40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-        taskTestTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.NEW,
-                40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
+        taskTestTwo = new Task("task 2", "Описание Task 2", 2, StatusTask.NEW,
+                40, LocalDateTime.of(2022, Month.MAY, 20, 11, 0));
 
-        taskManager.addTask(taskTestOne);
-        taskManager.addTask(taskTestTwo);
-
-        epicTestOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.NEW,
+        epicTestOne = new Epic("Epic 1", "Описание Epic 1", 3, StatusTask.NEW,
                 40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
-        epicTestTwo = new Epic("Epic 2", "Описание Epic 2", 0, StatusTask.NEW,
+        epicTestTwo = new Epic("Epic 2", "Описание Epic 2", 4, StatusTask.NEW,
                 40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
 
-
-        taskManager.addEpic(epicTestOne);
-        taskManager.addEpic(epicTestTwo);
-
-        subtaskTestOne = new Subtask("Subtask 1", "Описание Subtask 1", 0,
+        subtaskTestOne = new Subtask("Subtask 1", "Описание Subtask 1", 5,
                 StatusTask.IN_PROGRESS, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 11, 0), epicTestOne.getId());
+                LocalDateTime.of(2022, Month.MAY, 25, 10, 0), epicTestOne.getId());
 
-        subtaskTestTwo = new Subtask("Subtask 2", "Описание Subtask 2", 0,
+        subtaskTestTwo = new Subtask("Subtask 2", "Описание Subtask 2", 6,
                 StatusTask.NEW, 40,
-                LocalDateTime.of(2022, Month.MAY, 26, 11, 0), epicTestTwo.getId());
-
-
-        taskManager.addSubtask(subtaskTestOne);
-        taskManager.addSubtask(subtaskTestTwo);
+                LocalDateTime.of(2022, Month.MAY, 25, 11, 0), epicTestTwo.getId());
     }
 
     @Test
@@ -71,9 +61,12 @@ class InMemoryHistoryManagerTest  {
     @Test
     void addTest() {
         historyManager.add(taskTestTwo);
+        historyManager.add(epicTestOne);
+        List<Task> history = historyManager.getHistory();
 
-        assertFalse(historyManager.getHistory().isEmpty(), "Список истории пустой");
-        assertEquals(1, historyManager.getHistory().size(), "Ожидался другой размер списка");
+        assertFalse(history.isEmpty(), "Список истории пустой");
+        assertEquals(2, historyManager.getHistory().size(), "Ожидался другой размер списка");
+        assertEquals(history.get(0), taskTestTwo);
     }
 
     @Test
@@ -90,7 +83,7 @@ class InMemoryHistoryManagerTest  {
 
         assertFalse(historyManager.getHistory().isEmpty(), "Список истории пустой");
         assertEquals(3, historyManager.getHistory().size(), "Ожидался другой размер списка");
-        }
+    }
 
     @Test
     void isEmptyHistoryTaskTest () {
@@ -105,7 +98,6 @@ class InMemoryHistoryManagerTest  {
         historyManager.add(subtaskTestTwo);
         historyManager.add(taskTestOne);
         historyManager.add(epicTestOne);
-
 
         assertFalse(historyManager.getHistory().isEmpty(), "Список истории пустой");
         assertEquals(3, historyManager.getHistory().size(), "Ожидался другой размер списка");
