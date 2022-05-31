@@ -9,6 +9,7 @@ import task.StatusTask;
 import task.Subtask;
 import task.Task;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -98,6 +99,7 @@ public class InMemoryTaskManager implements TaskManager {
         getPrioritizedTasks();
         statusEpic(epic);
         subtask.getEndTime();
+        calculationTimeEpic(epic);
     }
 
     //Обновление подзадачи
@@ -114,6 +116,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.getListSubtask().add(subtask);
         statusEpic(epic);
         subtask.getEndTime();
+        calculationTimeEpic(epic);
     }
 
     //Получение списка всех подзадач
@@ -154,8 +157,7 @@ public class InMemoryTaskManager implements TaskManager {
                 Epic epic = userEpics.get(subtask.getEpicId());
                 epic.getListSubtask().remove(subtask);
                 getPrioritizedTasks().remove(subtask.getStartTime());
-                epic.getDuration();
-                epic.getStartTime();
+                calculationTimeEpic(epic);
                 epic.getEndTime();
                 break;
             }
@@ -171,6 +173,7 @@ public class InMemoryTaskManager implements TaskManager {
         epic.setId(++index);
         userEpics.put(epic.getId(), epic);
         statusEpic(epic);
+        calculationTimeEpic(epic);
         epic.getEndTime();
     }
 
@@ -181,6 +184,7 @@ public class InMemoryTaskManager implements TaskManager {
             return;
         }
         userEpics.put(epic.getId(), epic);
+        calculationTimeEpic(epic);
         epic.getEndTime();
     }
 
@@ -219,6 +223,8 @@ public class InMemoryTaskManager implements TaskManager {
         for (Subtask subtask : epic.getListSubtask()) {
             userSubtasks.remove(subtask.getId());
         }
+        calculationTimeEpic(epic);
+        epic.getEndTime();
     }
 
     //Подзадачи эпика
@@ -275,6 +281,21 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
+
+    public void calculationTimeEpic(Epic epic) {
+        LocalDateTime minStartTime = LocalDateTime.of(3000, 1, 1, 0, 0);
+        LocalDateTime maxEndTime = LocalDateTime.of(1980, 1, 1, 0, 0);
+        for (Subtask subtask : getSubtaskByEpic(epic)) {
+            if (minStartTime.isAfter(subtask.getStartTime())) {
+                minStartTime = subtask.getStartTime();
+            } else if (maxEndTime.isBefore(subtask.getStartTime().plusMinutes(subtask.getDuration()))) {
+                maxEndTime = subtask.getStartTime().plusMinutes(subtask.getDuration());
+            }
+            epic.setStartTime(minStartTime);
+            epic.setDuration(Duration.between(minStartTime, maxEndTime).toMinutes());
+        }
+    }
+
 
     @Override
     public String toString() {

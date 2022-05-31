@@ -13,7 +13,7 @@ public class Epic extends Task {
 
     public Epic(String nameTask, String description, long id, StatusTask statusTask, long duration,
                 LocalDateTime startTime) {
-        super(nameTask, description, id, statusTask,duration, startTime);
+        super(nameTask, description, id, statusTask, duration, startTime);
     }
 
     @Override
@@ -21,28 +21,19 @@ public class Epic extends Task {
         return TypeTask.EPIC;
     }
 
+    @Override
+    public long getDuration() {
+        return super.getDuration();
+    }
 
     @Override
     public LocalDateTime getStartTime() {
-        LocalDateTime minStartTime = LocalDateTime.of(3000, 1, 1, 0, 0);
-        for (Subtask subtask : getListSubtask()) {
-            if (minStartTime.isAfter(subtask.getStartTime())) {
-                minStartTime = subtask.getStartTime();
-            }
-        }
-        return minStartTime;
+        return super.getStartTime();
     }
 
-
     @Override
-    public long getDuration() {
-        LocalDateTime maxEndTime = LocalDateTime.of(1980, 1, 1, 0, 0);
-        for (Subtask subtaskEpic : getListSubtask()) {
-            if (maxEndTime.isBefore(subtaskEpic.getStartTime().plusMinutes(subtaskEpic.getDuration()))) {
-                maxEndTime = subtaskEpic.getStartTime().plusMinutes(subtaskEpic.getDuration());
-            }
-        }
-        return Duration.between(getStartTime(), maxEndTime).toMinutes();
+    public LocalDateTime getEndTime() {
+        return super.getEndTime();
     }
 
     public ArrayList<Subtask> getListSubtask() {

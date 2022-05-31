@@ -383,4 +383,58 @@ abstract class ManagerTest<T extends TaskManager> {
         });
         assertNotNull(throwable.getMessage());
     }
+
+    @Test
+    void getEndTimeEpicTest() {
+        assertEquals(LocalDateTime.of(2022, Month.MAY, 2, 11, 0).plusMinutes(100),
+                epicTestOne.getEndTime(),
+                "Время окончания задачи должно совпадать. Проверь startTime и duration");
+    }
+
+    @Test
+    void startTimeEpicsTest () {
+        assertEquals(LocalDateTime.of(2022, Month.MAY, 2, 11, 0),
+                epicTestOne.getStartTime(), "Время начала эпика должно совпадать. Проверь startTime");
+    }
+
+    @Test
+    void durationEpicsTest () {
+        assertEquals(100L, epicTestOne.getDuration(), "Продолжительность эпика должно совпадать. Проверь duration");
+    }
+
+    @Test
+    void removeSubtaskFromEpicForDetermineStartTimeTest () {
+        taskManager.removeSubtask(4);
+
+        assertEquals(LocalDateTime.of(2022, Month.MAY, 2, 11, 0),
+                epicTestOne.getStartTime(), "Время начала эпика должно совпадать. Проверь startTime");
+    }
+
+    @Test
+    void removeSubtaskFromEpicForDetermineDurationTest () {
+        taskManager.removeSubtask(4);
+
+        assertEquals(100, epicTestOne.getDuration(),
+                "Продолжительность эпика должно совпадать. Проверь duration");
+    }
+
+    @Test
+    void updateSubtaskFromEpicTest () {
+        Subtask subtaskTestUpdate = new Subtask("Subtask 10 ", "Описание Subtask 10", 6,
+                StatusTask.IN_PROGRESS, 40, LocalDateTime.of(2022, Month.MAY, 1, 10, 0), 3);
+        taskManager.updateSubtask(subtaskTestUpdate);
+
+        assertEquals(LocalDateTime.of(2022, Month.MAY, 1, 10, 0),
+                epicTestOne.getStartTime(), "Время начала эпика должно совпадать. Проверь startTime");
+    }
+
+    @Test
+    void getEndTimeTaskTest() {
+        Task task1 = new Task("task 1", "Описание Task 1", 1, StatusTask.NEW,
+                40, LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
+
+        assertEquals(LocalDateTime.of(2022, Month.MAY, 26, 11, 0).plusMinutes(40),
+                task1.getEndTime(),
+                "Время окончания задачи должно совпадать. Проверь startTime и duration");
+    }
 }

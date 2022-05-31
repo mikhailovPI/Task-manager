@@ -14,7 +14,7 @@ import static manager.saveToFile.CSVTaskSerializator.filePath;
 public class Main {
     public static void main(String[] args) {
 
-        TaskManager manager = Managers.getDefault();
+/*        TaskManager manager = Managers.getDefault();
 
         Task taskOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW, 40,
                 LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
@@ -58,6 +58,6 @@ public class Main {
 
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(filePath);
 
-        System.out.println(fileBackedTasksManager);
+        System.out.println(fileBackedTasksManager);*/
     }
 }
