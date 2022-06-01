@@ -1,3 +1,4 @@
+
 package manager.taskManager;
 
 import manager.Managers;
@@ -30,8 +31,8 @@ public class InMemoryTaskManager implements TaskManager {
         timeCrossing(task);
         task.setId(++index);
         userTasks.put(task.getId(), task);
+        prioritizedTasks.put(task.getStartTime(),task);
         task.getEndTime();
-        getPrioritizedTasks();
     }
 
     //Обновление задачи
@@ -42,7 +43,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         timeCrossing(task);
         userTasks.put(task.getId(), task);
-        getPrioritizedTasks().put(task.getStartTime(), task);
+        prioritizedTasks.put(task.getStartTime(), task);
         task.getEndTime();
     }
 
@@ -65,11 +66,11 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление всех задач
     @Override
     public void deleteTasks() {
-        userTasks.clear();
-        getPrioritizedTasks().clear();
         for (Task task : userTasks.values()) {
             inMemoryHistoryManager.remove(task.getId());
+            prioritizedTasks.remove(task.getStartTime(), task);
         }
+        userTasks.clear();
     }
 
     //Удаление задачи по индексу
@@ -77,7 +78,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void removeTask(long id) {
         for (Task task : userTasks.values()) {
             if (id == task.getId()) {
-                getPrioritizedTasks().remove(task.getStartTime());
+                prioritizedTasks.remove(task.getStartTime());
                 break;
             }
         }
@@ -96,7 +97,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.setId(++index);
         userSubtasks.put(subtask.getId(), subtask);
         epic.getListSubtask().add(subtask);
-        getPrioritizedTasks();
+        prioritizedTasks.put(subtask.getStartTime(),subtask);
         statusEpic(epic);
         subtask.getEndTime();
         calculationTimeEpic(epic);
@@ -112,7 +113,7 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = userEpics.get(subtask.getEpicId());
         epic.getListSubtask().remove(userSubtasks.get(subtask.getId()));
         userSubtasks.put(subtask.getId(), subtask);
-        getPrioritizedTasks().put(subtask.getStartTime(), subtask);
+        prioritizedTasks.put(subtask.getStartTime(), subtask);
         epic.getListSubtask().add(subtask);
         statusEpic(epic);
         subtask.getEndTime();
@@ -138,14 +139,14 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление всех подзадач
     @Override
     public void deleteSubtasks() {
+        for (Subtask subtask : userSubtasks.values()) {
+            inMemoryHistoryManager.remove(subtask.getId());
+            prioritizedTasks.remove(subtask.getStartTime());
+        }
         userSubtasks.clear();
         for (Epic epic : userEpics.values()) {
             epic.getListSubtask().clear();
             statusEpic(epic);
-        }
-        getPrioritizedTasks().clear();
-        for (Subtask subtask : userSubtasks.values()) {
-            inMemoryHistoryManager.remove(subtask.getId());
         }
     }
 
@@ -156,15 +157,14 @@ public class InMemoryTaskManager implements TaskManager {
             if (id == subtask.getId()) {
                 Epic epic = userEpics.get(subtask.getEpicId());
                 epic.getListSubtask().remove(subtask);
-                getPrioritizedTasks().remove(subtask.getStartTime());
                 calculationTimeEpic(epic);
+                prioritizedTasks.remove(subtask.getStartTime());
                 epic.getEndTime();
                 break;
             }
         }
         userSubtasks.remove(id);
         inMemoryHistoryManager.remove(id);
-        getPrioritizedTasks();
     }
 
     //Создание эпика
@@ -253,6 +253,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    //Получение истории задач
     @Override
     public List<Task> getHistory() {
         return inMemoryHistoryManager.getHistory();
@@ -261,13 +262,6 @@ public class InMemoryTaskManager implements TaskManager {
     //Сортировка задач по приоритету
     @Override
     public Map<LocalDateTime, Task> getPrioritizedTasks() {
-        List<Task> sortListTask = new ArrayList<>();
-        for (Task task : userTasks.values()) {
-            prioritizedTasks.put(task.getStartTime(), task);
-        }
-        for (Subtask subtask : userSubtasks.values()) {
-            prioritizedTasks.put(subtask.getStartTime(), subtask);
-        }
         return prioritizedTasks;
     }
 
@@ -282,6 +276,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    //Расчет продолжительности и времени старта эпика
     public void calculationTimeEpic(Epic epic) {
         LocalDateTime minStartTime = LocalDateTime.of(3000, 1, 1, 0, 0);
         LocalDateTime maxEndTime = LocalDateTime.of(1980, 1, 1, 0, 0);

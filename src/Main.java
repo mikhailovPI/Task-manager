@@ -14,20 +14,22 @@ import static manager.saveToFile.CSVTaskSerializator.filePath;
 public class Main {
     public static void main(String[] args) {
 
-/*        TaskManager manager = Managers.getDefault();
+        TaskManager manager = Managers.getDefault();
 
         Task taskOne = new Task("task 1", "Описание Task 1", 0, StatusTask.NEW, 40,
                 LocalDateTime.of(2022, Month.MAY, 26, 11, 0));
         Task taskTwo = new Task("task 2", "Описание Task 2", 0, StatusTask.DONE, 40,
-                LocalDateTime.of(2022, Month.MAY, 31, 11, 0));
+                LocalDateTime.of(2022, Month.MAY, 31, 12, 0));
 
         manager.addTask(taskOne);
         manager.addTask(taskTwo);
+
 
         Epic epicOne = new Epic("Epic 1", "Описание Epic 1", 0, StatusTask.DONE, 40,
                 LocalDateTime.of(2022, Month.MAY, 26, 10, 0));
 
         manager.addEpic(epicOne);
+        System.out.println(manager.getPrioritizedTasks());
 
         Subtask subtaskOne = new Subtask("Subtask 1", "Описание Subtask 1", 0,
                 StatusTask.DONE, 40,
@@ -50,14 +52,14 @@ public class Main {
 
         manager.getTask(taskOne.getId());
         manager.getTask(taskTwo.getId());
+        
         manager.getEpic(epicOne.getId());
+
         manager.getSubtask(subtaskOne.getId());
         manager.getSubtask(subtaskTwo.getId());
 
-        System.out.println(epicOne.getEndTime());
-
         FileBackedTasksManager fileBackedTasksManager = FileBackedTasksManager.loadFromFile(filePath);
 
-        System.out.println(fileBackedTasksManager);*/
+        System.out.println(fileBackedTasksManager);
     }
 }
