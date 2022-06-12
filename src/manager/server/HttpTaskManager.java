@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class HttpTaskManager extends FileBackedTasksManager {
 
-    Gson gson = HttpTaskServer.getGson();
-    KVTaskClient kvTaskClient = new KVTaskClient("http://localhost:8078");
+    private final Gson gson = HttpTaskServer.getGson();
+    private final KVTaskClient kvTaskClient = new KVTaskClient("http://localhost:8078");
 
     public HttpTaskManager() {
         load();

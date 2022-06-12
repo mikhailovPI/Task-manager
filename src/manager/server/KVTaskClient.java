@@ -11,9 +11,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class KVTaskClient {
-    String url;
-    String api_token;
-    private HttpClient client;
+    private final String url;
+    private final String api_token;
+    private final HttpClient client;
 
     public KVTaskClient(String url) {
         client = HttpClient.newHttpClient();

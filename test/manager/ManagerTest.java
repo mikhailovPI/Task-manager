@@ -14,7 +14,7 @@ import java.time.Month;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract class ManagerTest<T extends TaskManager> {
+public abstract class ManagerTest<T extends TaskManager> {
 
     protected T taskManager;
     Task taskTestOne;

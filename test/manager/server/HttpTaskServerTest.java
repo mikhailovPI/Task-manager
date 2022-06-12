@@ -1,7 +1,10 @@
-package server;
+package manager.server;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import manager.ManagerTest;
+import manager.interfaceClass.TaskManager;
+import manager.saveToFile.FileBackedTasksManager;
 import manager.server.HttpTaskServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +25,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class HttpTaskServerTest {
+public class HttpTaskServerTest extends ManagerTest<FileBackedTasksManager> {
 
     private final Gson gson = HttpTaskServer.getGson();
     private HttpClient client;
