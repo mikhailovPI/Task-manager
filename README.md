@@ -27,6 +27,8 @@
 Для хранения истории просмотров задач реализованы методы, позволяющие реализовать алгоритмическую сложность О(1).
 Это достигается реализацией двусвязанного списка и HashMap.
 
+Доступ к методам осуществляется с помощью HTTP-запросов и хранит свое состояние на отдельном сервере.
+
 Программа написана на Java. Пример кода:
 
 ```java
@@ -49,11 +51,11 @@ public class Managers {
 }
 ....
 //Получение задачи по индексу
-@Override
-public Task getTask(int id){
-        if(userTasks.containsKey(id)){
-        inMemoryHistoryManager.add(userTasks.get(id));
-        }
-        return userTasks.get(id);
-        }
+public Task getTask(long id) {
+   Task task = userTasks.get(id);
+    if (task != null) {
+        inMemoryHistoryManager.add(task);
+    }
+    return task;
+}
 ```

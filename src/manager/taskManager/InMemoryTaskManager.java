@@ -31,7 +31,7 @@ public class InMemoryTaskManager implements TaskManager {
         timeCrossing(task);
         task.setId(++index);
         userTasks.put(task.getId(), task);
-        prioritizedTasks.put(task.getStartTime(),task);
+        prioritizedTasks.put(task.getStartTime(), task);
         task.getEndTime();
     }
 
@@ -97,7 +97,7 @@ public class InMemoryTaskManager implements TaskManager {
         subtask.setId(++index);
         userSubtasks.put(subtask.getId(), subtask);
         epic.getListSubtask().add(subtask);
-        prioritizedTasks.put(subtask.getStartTime(),subtask);
+        prioritizedTasks.put(subtask.getStartTime(), subtask);
         statusEpic(epic);
         subtask.getEndTime();
         calculationTimeEpic(epic);
@@ -143,11 +143,11 @@ public class InMemoryTaskManager implements TaskManager {
             inMemoryHistoryManager.remove(subtask.getId());
             prioritizedTasks.remove(subtask.getStartTime());
         }
-        userSubtasks.clear();
         for (Epic epic : userEpics.values()) {
             epic.getListSubtask().clear();
             statusEpic(epic);
         }
+        userSubtasks.clear();
     }
 
     //Удаление подзадачи по индексу
@@ -207,11 +207,11 @@ public class InMemoryTaskManager implements TaskManager {
     //Удаление всех эпиков
     @Override
     public void deleteEpics() {
-        userEpics.clear();
-        userSubtasks.clear();
         for (Epic epic : userEpics.values()) {
             inMemoryHistoryManager.remove(epic.getId());
         }
+        userEpics.clear();
+        userSubtasks.clear();
     }
 
     //Удаление эпика по индексу
@@ -237,13 +237,14 @@ public class InMemoryTaskManager implements TaskManager {
     //Определение статуса эпика
     @Override
     public void statusEpic(Epic epic) {
-        List<Subtask> listSubtask = new ArrayList<>(getSubtaskByEpic(epic));
-
         if (epic == null) {
             return;
         }
-        boolean a = listSubtask.stream().allMatch(Subtask -> Subtask.getStatus().equals(StatusTask.DONE));
-        boolean b = listSubtask.stream().allMatch(Subtask -> Subtask.getStatus().equals(StatusTask.NEW));
+        if (getSubtaskByEpic(epic).isEmpty()) {
+            epic.setStatus(StatusTask.NEW);
+        }
+        boolean a = getSubtaskByEpic(epic).stream().allMatch(Subtask -> Subtask.getStatus().equals(StatusTask.DONE));
+        boolean b = getSubtaskByEpic(epic).stream().allMatch(Subtask -> Subtask.getStatus().equals(StatusTask.NEW));
         if (b) {
             epic.setStatus(StatusTask.NEW);
         } else if (a) {
@@ -280,6 +281,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void calculationTimeEpic(Epic epic) {
         LocalDateTime minStartTime = LocalDateTime.of(3000, 1, 1, 0, 0);
         LocalDateTime maxEndTime = LocalDateTime.of(1980, 1, 1, 0, 0);
+
         for (Subtask subtask : getSubtaskByEpic(epic)) {
             if (minStartTime.isAfter(subtask.getStartTime())) {
                 minStartTime = subtask.getStartTime();

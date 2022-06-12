@@ -3,9 +3,9 @@ package manager;
 import manager.history.InMemoryHistoryManager;
 import manager.interfaceClass.HistoryManager;
 import manager.interfaceClass.TaskManager;
-import manager.saveToFile.FileBackedTasksManager;
+import manager.server.HttpTaskManager;
 
-import static manager.saveToFile.CSVTaskSerializator.filePath;
+import java.io.IOException;
 
 public class Managers {
 
@@ -14,7 +14,7 @@ public class Managers {
 
     public static TaskManager getDefault() {
         if (taskManager == null) {
-            taskManager = new FileBackedTasksManager(filePath);
+            taskManager = new HttpTaskManager();
         }
         return taskManager;
     }

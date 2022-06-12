@@ -31,10 +31,10 @@ public class Epic extends Task {
         return super.getStartTime();
     }
 
-    @Override
+/*    @Override
     public LocalDateTime getEndTime() {
         return super.getEndTime();
-    }
+    }*/
 
     public ArrayList<Subtask> getListSubtask() {
         return listSubtask;

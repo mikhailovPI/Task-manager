@@ -13,10 +13,16 @@ import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
+
+
     private File file;
 
     public FileBackedTasksManager(String filePath) {
         file = new File(filePath);
+    }
+
+    public FileBackedTasksManager() {
+
     }
 
     @Override
@@ -113,7 +119,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     // Сохранение в файл
-    private void save() {
+    protected void save() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             String header = "id,type,name,status,description,epic,duration,startTime";
             writer.append(header);
@@ -140,7 +146,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-    private void load() {
+    protected void load() {
         long idMax = 0;
         try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             reader.readLine();

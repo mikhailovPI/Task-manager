@@ -7,6 +7,7 @@ import java.util.Objects;
 
 public class Task {
 
+
     private String nameTask;
     private String description;
     private long id;
@@ -77,7 +78,8 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        return getStartTime().plusMinutes(getDuration());
+        endTime = getStartTime().plusMinutes(getDuration());
+        return endTime;
     }
 
     @Override
