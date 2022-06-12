@@ -7,7 +7,6 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import manager.Managers;
 import manager.interfaceClass.TaskManager;
-import manager.saveToFile.FileBackedTasksManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
@@ -35,7 +34,7 @@ public class HttpTaskServer {
     }
 
     public HttpTaskServer() throws IOException {
-        manager =  new FileBackedTasksManager();
+        manager =  Managers.getDefault();
 
         httpServer = HttpServer.create(new InetSocketAddress(PORT), 0);
         httpServer.createContext("/tasks", new TasksHandler());

@@ -10,7 +10,6 @@ import task.Task;
 
 import java.util.ArrayList;
 
-
 public class HttpTaskManager extends FileBackedTasksManager {
 
     Gson gson = HttpTaskServer.getGson();
@@ -60,7 +59,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
             System.out.println("Список сохраненных эпиков пуст");
         }
 
-        try {  //SubTask load
+        try {  //Subtask load
             ArrayList<Subtask> subtask = gson.fromJson(kvTaskClient.load("subtask"),
                     new TypeToken<ArrayList<Subtask>>(){}.getType());
             for (Subtask subtask1 : subtask) {

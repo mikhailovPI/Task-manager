@@ -5,8 +5,6 @@ import manager.interfaceClass.HistoryManager;
 import manager.interfaceClass.TaskManager;
 import manager.server.HttpTaskManager;
 
-import java.io.IOException;
-
 public class Managers {
 
     private static TaskManager taskManager;

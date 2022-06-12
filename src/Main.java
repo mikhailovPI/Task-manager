@@ -1,3 +1,4 @@
+
 import manager.*;
 import manager.interfaceClass.TaskManager;
 import manager.server.HttpTaskServer;
@@ -59,5 +60,6 @@ public class Main {
         System.out.println("\nВсе сабтаски");
         System.out.println(taskManager.listSubtask());
         taskServer.stop();
+        kvServer.stop();
     }
 }

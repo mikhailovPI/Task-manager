@@ -3,7 +3,6 @@ package server;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import manager.server.HttpTaskServer;
-import manager.server.KVServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -210,7 +209,6 @@ class HttpTaskServerTest {
         HttpRequest requestGetSubTask = HttpRequest.newBuilder().uri(urlGetSubTask).GET().build();
         HttpResponse<String> responseGetTask = client.send(requestGetSubTask, HttpResponse.BodyHandlers.ofString());
         assertEquals(200, responseGetTask.statusCode());
-        System.out.println(responseGetTask.body());
         assertTrue(responseGetTask.body().contains(subtaskOne.getNameTask()));
     }
 
