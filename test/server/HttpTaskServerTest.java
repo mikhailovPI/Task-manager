@@ -290,7 +290,6 @@ class HttpTaskServerTest {
         assertTrue(responseGetSubtasks2.body().contains(subtaskTwo.getNameTask()), "Имя задачи не совпадает");
     }
 
-    //отдельно работает
     @Test
     public void deleteAllSubtasksHttpTest() throws IOException, InterruptedException {
         URI urlEpic = URI.create("http://localhost:8080/tasks/epic"); // Прописываем http запрос
@@ -321,7 +320,6 @@ class HttpTaskServerTest {
         assertFalse(responseGetSubtasks2.body().contains(subtaskTwo.getNameTask()), "Имя задачи совпадает");
     }
 
-    //не работает вообще
     @Test
     public void getEpicSubtasksHttpTest() throws IOException, InterruptedException {
         URI urlEpic = URI.create("http://localhost:8080/tasks/epic"); // Прописываем http запрос
@@ -497,7 +495,6 @@ class HttpTaskServerTest {
         assertFalse(response.body().contains(epicOne.getNameTask()));
     }
 
-    //не работает вообще
     @Test
     public void getHistoryHttpTest() throws IOException, InterruptedException {
         //epic

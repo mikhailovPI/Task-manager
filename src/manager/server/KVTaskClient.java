@@ -14,7 +14,6 @@ public class KVTaskClient {
     String url;
     String api_token;
     private HttpClient client;
-    Gson gson = HttpTaskServer.getGson();
 
     public KVTaskClient(String url) {
         client = HttpClient.newHttpClient();
